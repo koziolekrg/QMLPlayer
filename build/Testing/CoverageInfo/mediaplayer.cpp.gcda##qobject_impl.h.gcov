@@ -1,0 +1,213 @@
+        -:    0:Source:/home/pako/Qt5.6.0/5.6/gcc_64/include/QtCore/qobject_impl.h
+        -:    0:Graph:/home/pako/Desktop/GitLab/library/media_player_qml_cmake/build/CMakeFiles/music_player.dir/src/mediaplayer.cpp.gcno
+        -:    0:Data:/home/pako/Desktop/GitLab/library/media_player_qml_cmake/build/CMakeFiles/music_player.dir/src/mediaplayer.cpp.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:/****************************************************************************
+        -:    2:**
+        -:    3:** Copyright (C) 2015 The Qt Company Ltd.
+        -:    4:** Contact: http://www.qt.io/licensing/
+        -:    5:**
+        -:    6:** This file is part of the QtCore module of the Qt Toolkit.
+        -:    7:**
+        -:    8:** $QT_BEGIN_LICENSE:LGPL21$
+        -:    9:** Commercial License Usage
+        -:   10:** Licensees holding valid commercial Qt licenses may use this file in
+        -:   11:** accordance with the commercial license agreement provided with the
+        -:   12:** Software or, alternatively, in accordance with the terms contained in
+        -:   13:** a written agreement between you and The Qt Company. For licensing terms
+        -:   14:** and conditions see http://www.qt.io/terms-conditions. For further
+        -:   15:** information use the contact form at http://www.qt.io/contact-us.
+        -:   16:**
+        -:   17:** GNU Lesser General Public License Usage
+        -:   18:** Alternatively, this file may be used under the terms of the GNU Lesser
+        -:   19:** General Public License version 2.1 or version 3 as published by the Free
+        -:   20:** Software Foundation and appearing in the file LICENSE.LGPLv21 and
+        -:   21:** LICENSE.LGPLv3 included in the packaging of this file. Please review the
+        -:   22:** following information to ensure the GNU Lesser General Public License
+        -:   23:** requirements will be met: https://www.gnu.org/licenses/lgpl.html and
+        -:   24:** http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
+        -:   25:**
+        -:   26:** As a special exception, The Qt Company gives you certain additional
+        -:   27:** rights. These rights are described in The Qt Company LGPL Exception
+        -:   28:** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
+        -:   29:**
+        -:   30:** $QT_END_LICENSE$
+        -:   31:**
+        -:   32:****************************************************************************/
+        -:   33:
+        -:   34:#ifndef Q_QDOC
+        -:   35:
+        -:   36:#ifndef QOBJECT_H
+        -:   37:#error Do not include qobject_impl.h directly
+        -:   38:#endif
+        -:   39:
+        -:   40:#if 0
+        -:   41:#pragma qt_sync_skip_header_check
+        -:   42:#pragma qt_sync_stop_processing
+        -:   43:#endif
+        -:   44:
+        -:   45:QT_BEGIN_NAMESPACE
+        -:   46:
+        -:   47:
+        -:   48:namespace QtPrivate {
+        -:   49:    /*
+        -:   50:        Logic to statically generate the array of qMetaTypeId
+        -:   51:        ConnectionTypes<FunctionPointer<Signal>::Arguments>::types() returns an array
+        -:   52:        of int that is suitable for the types arguments of the connection functions.
+        -:   53:
+        -:   54:        The array only exist of all the types are declared as a metatype
+        -:   55:        (detected using the TypesAreDeclaredMetaType helper struct)
+        -:   56:        If one of the type is not declared, the function return 0 and the signal
+        -:   57:        cannot be used in queued connection.
+        -:   58:    */
+        -:   59:#ifndef Q_COMPILER_VARIADIC_TEMPLATES
+        -:   60:    template <typename ArgList> struct TypesAreDeclaredMetaType { enum { Value = false }; };
+        -:   61:    template <> struct TypesAreDeclaredMetaType<void> { enum { Value = true }; };
+        -:   62:    template <typename Arg, typename Tail> struct TypesAreDeclaredMetaType<List<Arg, Tail> > { enum { Value = QMetaTypeId2<Arg>::Defined && TypesAreDeclaredMetaType<Tail>::Value }; };
+        -:   63:
+        -:   64:    template <typename ArgList, bool Declared = TypesAreDeclaredMetaType<ArgList>::Value > struct ConnectionTypes
+        -:   65:    { static const int *types() { return 0; } };
+        -:   66:    template <> struct ConnectionTypes<void, true>
+        -:   67:    { static const int *types() { static const int t[1] = { 0 }; return t; } };
+        -:   68:    template <typename Arg1> struct ConnectionTypes<List<Arg1, void>, true>
+    #####:   69:    { static const int *types() { static const int t[2] = { QtPrivate::QMetaTypeIdHelper<Arg1>::qt_metatype_id(), 0 }; return t; } };
+        -:   70:    template <typename Arg1, typename Arg2> struct ConnectionTypes<List<Arg1, List<Arg2, void> >, true>
+        -:   71:    { static const int *types() { static const int t[3] = { QtPrivate::QMetaTypeIdHelper<Arg1>::qt_metatype_id(), QtPrivate::QMetaTypeIdHelper<Arg2>::qt_metatype_id(), 0 }; return t; } };
+        -:   72:    template <typename Arg1, typename Arg2, typename Arg3> struct ConnectionTypes<List<Arg1, List<Arg2,  List<Arg3, void> > >, true>
+        -:   73:    { static const int *types() { static const int t[4] = { QtPrivate::QMetaTypeIdHelper<Arg1>::qt_metatype_id(), QtPrivate::QMetaTypeIdHelper<Arg2>::qt_metatype_id(),
+        -:   74:                                                            QtPrivate::QMetaTypeIdHelper<Arg3>::qt_metatype_id(), 0 }; return t; } };
+        -:   75:    template <typename Arg1, typename Arg2, typename Arg3, typename Arg4> struct ConnectionTypes<List<Arg1, List<Arg2,  List<Arg3, List<Arg4, void> > > >, true>
+        -:   76:    { static const int *types() { static const int t[5] = { QtPrivate::QMetaTypeIdHelper<Arg1>::qt_metatype_id(), QtPrivate::QMetaTypeIdHelper<Arg2>::qt_metatype_id(),
+        -:   77:                QtPrivate::QMetaTypeIdHelper<Arg3>::qt_metatype_id(), QtPrivate::QMetaTypeIdHelper<Arg4>::qt_metatype_id(), 0 }; return t; } };
+        -:   78:    template <typename Arg1, typename Arg2, typename Arg3, typename Arg4, typename Arg5> struct ConnectionTypes<List<Arg1, List<Arg2,  List<Arg3, List<Arg4, List<Arg5, void> > > > >, true>
+        -:   79:    { static const int *types() { static const int t[6] = { QtPrivate::QMetaTypeIdHelper<Arg1>::qt_metatype_id(), QtPrivate::QMetaTypeIdHelper<Arg2>::qt_metatype_id(),
+        -:   80:                QtPrivate::QMetaTypeIdHelper<Arg3>::qt_metatype_id(), QtPrivate::QMetaTypeIdHelper<Arg4>::qt_metatype_id(), QtPrivate::QMetaTypeIdHelper<Arg5>::qt_metatype_id(), 0 }; return t; } };
+        -:   81:    template <typename Arg1, typename Arg2, typename Arg3, typename Arg4, typename Arg5, typename Arg6>
+        -:   82:    struct ConnectionTypes<List<Arg1, List<Arg2,  List<Arg3, List<Arg4, List<Arg5, List<Arg6, void> > > > > >, true>
+        -:   83:    { static const int *types() { static const int t[7] = { QtPrivate::QMetaTypeIdHelper<Arg1>::qt_metatype_id(), QtPrivate::QMetaTypeIdHelper<Arg2>::qt_metatype_id(),
+        -:   84:            QtPrivate::QMetaTypeIdHelper<Arg3>::qt_metatype_id(), QtPrivate::QMetaTypeIdHelper<Arg4>::qt_metatype_id(), QtPrivate::QMetaTypeIdHelper<Arg5>::qt_metatype_id(),
+        -:   85:            QtPrivate::QMetaTypeIdHelper<Arg6>::qt_metatype_id(), 0 }; return t; } };
+        -:   86:#else
+        -:   87:    template <typename ArgList> struct TypesAreDeclaredMetaType { enum { Value = false }; };
+        -:   88:    template <> struct TypesAreDeclaredMetaType<List<>> { enum { Value = true }; };
+        -:   89:    template <typename Arg, typename... Tail> struct TypesAreDeclaredMetaType<List<Arg, Tail...> >
+        -:   90:    { enum { Value = QMetaTypeId2<Arg>::Defined && TypesAreDeclaredMetaType<List<Tail...>>::Value }; };
+        -:   91:
+        -:   92:    template <typename ArgList, bool Declared = TypesAreDeclaredMetaType<ArgList>::Value > struct ConnectionTypes
+        -:   93:    { static const int *types() { return Q_NULLPTR; } };
+        -:   94:    template <> struct ConnectionTypes<List<>, true>
+        -:   95:    { static const int *types() { return Q_NULLPTR; } };
+        -:   96:    template <typename... Args> struct ConnectionTypes<List<Args...>, true>
+        -:   97:    { static const int *types() { static const int t[sizeof...(Args) + 1] = { (QtPrivate::QMetaTypeIdHelper<Args>::qt_metatype_id())..., 0 }; return t; } };
+        -:   98:#endif
+        -:   99:
+        -:  100:    // internal base class (interface) containing functions required to call a slot managed by a pointer to function.
+        -:  101:    class QSlotObjectBase {
+        -:  102:        QAtomicInt m_ref;
+        -:  103:        // don't use virtual functions here; we don't want the
+        -:  104:        // compiler to create tons of per-polymorphic-class stuff that
+        -:  105:        // we'll never need. We just use one function pointer.
+        -:  106:        typedef void (*ImplFn)(int which, QSlotObjectBase* this_, QObject *receiver, void **args, bool *ret);
+        -:  107:        const ImplFn m_impl;
+        -:  108:    protected:
+        -:  109:        enum Operation {
+        -:  110:            Destroy,
+        -:  111:            Call,
+        -:  112:            Compare,
+        -:  113:
+        -:  114:            NumOperations
+        -:  115:        };
+        -:  116:    public:
+        2:  117:        explicit QSlotObjectBase(ImplFn fn) : m_ref(1), m_impl(fn) {}
+        -:  118:
+        -:  119:        inline int ref() Q_DECL_NOTHROW { return m_ref.ref(); }
+        -:  120:        inline void destroyIfLastRef() Q_DECL_NOTHROW
+        -:  121:        { if (!m_ref.deref()) m_impl(Destroy, this, Q_NULLPTR, Q_NULLPTR, Q_NULLPTR); }
+        -:  122:
+        -:  123:        inline bool compare(void **a) { bool ret; m_impl(Compare, this, Q_NULLPTR, a, &ret); return ret; }
+        -:  124:        inline void call(QObject *r, void **a)  { m_impl(Call,    this, r, a, Q_NULLPTR); }
+        -:  125:    protected:
+        2:  126:        ~QSlotObjectBase() {}
+        -:  127:    private:
+        -:  128:        Q_DISABLE_COPY(QSlotObjectBase)
+        -:  129:    };
+        -:  130:    // implementation of QSlotObjectBase for which the slot is a pointer to member function of a QObject
+        -:  131:    // Args and R are the List of arguments and the returntype of the signal to which the slot is connected.
+        2:  132:    template<typename Func, typename Args, typename R> class QSlotObject : public QSlotObjectBase
+        -:  133:    {
+        -:  134:        typedef QtPrivate::FunctionPointer<Func> FuncType;
+        -:  135:        Func function;
+        4:  136:        static void impl(int which, QSlotObjectBase *this_, QObject *r, void **a, bool *ret)
+        -:  137:        {
+        4:  138:            switch (which) {
+        -:  139:            case Destroy:
+        2:  140:                delete static_cast<QSlotObject*>(this_);
+        2:  141:                break;
+        -:  142:            case Call:
+        2:  143:                FuncType::template call<Args, R>(static_cast<QSlotObject*>(this_)->function, static_cast<typename FuncType::Object *>(r), a);
+        2:  144:                break;
+        -:  145:            case Compare:
+    #####:  146:                *ret = *reinterpret_cast<Func *>(a) == static_cast<QSlotObject*>(this_)->function;
+    #####:  147:                break;
+        -:  148:            case NumOperations: ;
+        -:  149:            }
+        4:  150:        }
+        -:  151:    public:
+        2:  152:        explicit QSlotObject(Func f) : QSlotObjectBase(&impl), function(f) {}
+        -:  153:    };
+        -:  154:    // implementation of QSlotObjectBase for which the slot is a static function
+        -:  155:    // Args and R are the List of arguments and the returntype of the signal to which the slot is connected.
+        -:  156:    template<typename Func, typename Args, typename R> class QStaticSlotObject : public QSlotObjectBase
+        -:  157:    {
+        -:  158:        typedef QtPrivate::FunctionPointer<Func> FuncType;
+        -:  159:        Func function;
+        -:  160:        static void impl(int which, QSlotObjectBase *this_, QObject *r, void **a, bool *ret)
+        -:  161:        {
+        -:  162:            switch (which) {
+        -:  163:            case Destroy:
+        -:  164:                delete static_cast<QStaticSlotObject*>(this_);
+        -:  165:                break;
+        -:  166:            case Call:
+        -:  167:                FuncType::template call<Args, R>(static_cast<QStaticSlotObject*>(this_)->function, r, a);
+        -:  168:                break;
+        -:  169:            case Compare:
+        -:  170:                *ret = false; // not implemented
+        -:  171:                break;
+        -:  172:            case NumOperations: ;
+        -:  173:            }
+        -:  174:        }
+        -:  175:    public:
+        -:  176:        explicit QStaticSlotObject(Func f) : QSlotObjectBase(&impl), function(f) {}
+        -:  177:    };
+        -:  178:    // implementation of QSlotObjectBase for which the slot is a functor (or lambda)
+        -:  179:    // N is the number of arguments
+        -:  180:    // Args and R are the List of arguments and the returntype of the signal to which the slot is connected.
+        -:  181:    template<typename Func, int N, typename Args, typename R> class QFunctorSlotObject : public QSlotObjectBase
+        -:  182:    {
+        -:  183:        typedef QtPrivate::Functor<Func, N> FuncType;
+        -:  184:        Func function;
+        -:  185:        static void impl(int which, QSlotObjectBase *this_, QObject *r, void **a, bool *ret)
+        -:  186:        {
+        -:  187:            switch (which) {
+        -:  188:            case Destroy:
+        -:  189:                delete static_cast<QFunctorSlotObject*>(this_);
+        -:  190:                break;
+        -:  191:            case Call:
+        -:  192:                FuncType::template call<Args, R>(static_cast<QFunctorSlotObject*>(this_)->function, r, a);
+        -:  193:                break;
+        -:  194:            case Compare:
+        -:  195:                *ret = false; // not implemented
+        -:  196:                break;
+        -:  197:            case NumOperations: ;
+        -:  198:            }
+        -:  199:        }
+        -:  200:    public:
+        -:  201:        explicit QFunctorSlotObject(const Func &f) : QSlotObjectBase(&impl), function(f) {}
+        -:  202:    };
+        -:  203:}
+        -:  204:
+        -:  205:
+        -:  206:QT_END_NAMESPACE
+        -:  207:
+        -:  208:#endif

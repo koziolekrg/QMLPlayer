@@ -1,0 +1,210 @@
+Performing coverage: 1.46356e+09
+* Run coverage for: /home/pako/Desktop/GitLab/library/media_player_qml_cmake/build/CMakeFiles/music_player.dir/src
+  Command: "/usr/bin/gcov" -l -o "/home/pako/Desktop/GitLab/library/media_player_qml_cmake/build/CMakeFiles/music_player.dir/src" "/home/pako/Desktop/GitLab/library/media_player_qml_cmake/build/CMakeFiles/music_player.dir/src/mediaplayer.cpp.gcda"
+  Output: File '/home/pako/Desktop/GitLab/library/media_player_qml_cmake/src/mediaplayer.cpp'
+Lines executed:57.65% of 85
+Creating 'mediaplayer.cpp.gcda##mediaplayer.cpp.gcov'
+
+File '/usr/include/c++/4.9/iostream'
+Lines executed:100.00% of 1
+Creating 'mediaplayer.cpp.gcda##iostream.gcov'
+
+File '/home/pako/Qt5.6.0/5.6/gcc_64/include/QtCore/qobjectdefs_impl.h'
+Lines executed:100.00% of 4
+Creating 'mediaplayer.cpp.gcda##qobjectdefs_impl.h.gcov'
+
+File '/usr/include/c++/4.9/ext/new_allocator.h'
+Lines executed:0.00% of 2
+Creating 'mediaplayer.cpp.gcda##new_allocator.h.gcov'
+
+File '/home/pako/Qt5.6.0/5.6/gcc_64/include/QtCore/qobject_impl.h'
+Lines executed:78.57% of 14
+Creating 'mediaplayer.cpp.gcda##qobject_impl.h.gcov'
+
+File '/home/pako/Qt5.6.0/5.6/gcc_64/include/QtCore/qmetatype.h'
+Lines executed:0.00% of 3
+Creating 'mediaplayer.cpp.gcda##qmetatype.h.gcov'
+
+File '/usr/include/c++/4.9/bits/allocator.h'
+No executable lines
+Removing 'mediaplayer.cpp.gcda##allocator.h.gcov'
+
+File '/usr/include/c++/4.9/bits/basic_string.h'
+Lines executed:0.00% of 1
+Creating 'mediaplayer.cpp.gcda##basic_string.h.gcov'
+
+File '/home/pako/Qt5.6.0/5.6/gcc_64/include/QtCore/qatomic_x86.h'
+Lines executed:0.00% of 6
+Creating 'mediaplayer.cpp.gcda##qatomic_x86.h.gcov'
+
+File '/home/pako/Qt5.6.0/5.6/gcc_64/include/QtCore/qobject.h'
+Lines executed:80.00% of 5
+Creating 'mediaplayer.cpp.gcda##qobject.h.gcov'
+
+File '/home/pako/Qt5.6.0/5.6/gcc_64/include/QtCore/qflags.h'
+Lines executed:100.00% of 1
+Creating 'mediaplayer.cpp.gcda##qflags.h.gcov'
+
+File '/home/pako/Qt5.6.0/5.6/gcc_64/include/QtCore/qurl.h'
+Lines executed:0.00% of 1
+Creating 'mediaplayer.cpp.gcda##qurl.h.gcov'
+
+File '/home/pako/Qt5.6.0/5.6/gcc_64/include/QtCore/qarraydata.h'
+Lines executed:33.33% of 9
+Creating 'mediaplayer.cpp.gcda##qarraydata.h.gcov'
+
+File '/home/pako/Qt5.6.0/5.6/gcc_64/include/QtCore/qbasicatomic.h'
+Lines executed:25.00% of 4
+Creating 'mediaplayer.cpp.gcda##qbasicatomic.h.gcov'
+
+File '/home/pako/Qt5.6.0/5.6/gcc_64/include/QtCore/qgenericatomic.h'
+Lines executed:0.00% of 1
+Creating 'mediaplayer.cpp.gcda##qgenericatomic.h.gcov'
+
+File '/home/pako/Qt5.6.0/5.6/gcc_64/include/QtCore/qatomic.h'
+Lines executed:100.00% of 5
+Creating 'mediaplayer.cpp.gcda##qatomic.h.gcov'
+
+File '/home/pako/Qt5.6.0/5.6/gcc_64/include/QtCore/qstring.h'
+Lines executed:10.53% of 19
+Creating 'mediaplayer.cpp.gcda##qstring.h.gcov'
+
+File '/home/pako/Qt5.6.0/5.6/gcc_64/include/QtCore/qbytearray.h'
+Lines executed:0.00% of 3
+Creating 'mediaplayer.cpp.gcda##qbytearray.h.gcov'
+
+File '/usr/include/c++/4.9/ext/atomicity.h'
+Lines executed:0.00% of 10
+Creating 'mediaplayer.cpp.gcda##atomicity.h.gcov'
+
+File '/usr/include/x86_64-linux-gnu/c++/4.9/bits/gthr-default.h'
+Lines executed:0.00% of 2
+Creating 'mediaplayer.cpp.gcda##gthr-default.h.gcov'
+
+File '/home/pako/Qt5.6.0/5.6/gcc_64/include/QtCore/qrefcount.h'
+Lines executed:0.00% of 14
+Creating 'mediaplayer.cpp.gcda##qrefcount.h.gcov'
+
+
+  Errors: /home/pako/Desktop/GitLab/library/media_player_qml_cmake/build/CMakeFiles/music_player.dir/src/mediaplayer.cpp.gcno:version '409*', prefer '408*'
+/home/pako/Desktop/GitLab/library/media_player_qml_cmake/build/CMakeFiles/music_player.dir/src/mediaplayer.cpp.gcda:version '409*', prefer version '408*'
+
+  produced in source dir: /home/pako/Desktop/GitLab/library/media_player_qml_cmake/src/mediaplayer.cpp
+  Something went wrong. Cannot find file: /usr/include/c++/4.9/iostream in source dir: /home/pako/Desktop/GitLab/library/media_player_qml_cmake or binary dir: /home/pako/Desktop/GitLab/library/media_player_qml_cmake/build
+  Something went wrong. Cannot find file: /home/pako/Qt5.6.0/5.6/gcc_64/include/QtCore/qobjectdefs_impl.h in source dir: /home/pako/Desktop/GitLab/library/media_player_qml_cmake or binary dir: /home/pako/Desktop/GitLab/library/media_player_qml_cmake/build
+  Something went wrong. Cannot find file: /usr/include/c++/4.9/ext/new_allocator.h in source dir: /home/pako/Desktop/GitLab/library/media_player_qml_cmake or binary dir: /home/pako/Desktop/GitLab/library/media_player_qml_cmake/build
+  Something went wrong. Cannot find file: /home/pako/Qt5.6.0/5.6/gcc_64/include/QtCore/qobject_impl.h in source dir: /home/pako/Desktop/GitLab/library/media_player_qml_cmake or binary dir: /home/pako/Desktop/GitLab/library/media_player_qml_cmake/build
+  Something went wrong. Cannot find file: /home/pako/Qt5.6.0/5.6/gcc_64/include/QtCore/qmetatype.h in source dir: /home/pako/Desktop/GitLab/library/media_player_qml_cmake or binary dir: /home/pako/Desktop/GitLab/library/media_player_qml_cmake/build
+  Something went wrong. Cannot find file: /usr/include/c++/4.9/bits/allocator.h in source dir: /home/pako/Desktop/GitLab/library/media_player_qml_cmake or binary dir: /home/pako/Desktop/GitLab/library/media_player_qml_cmake/build
+  Something went wrong. Cannot find file: /usr/include/c++/4.9/bits/basic_string.h in source dir: /home/pako/Desktop/GitLab/library/media_player_qml_cmake or binary dir: /home/pako/Desktop/GitLab/library/media_player_qml_cmake/build
+  Something went wrong. Cannot find file: /home/pako/Qt5.6.0/5.6/gcc_64/include/QtCore/qatomic_x86.h in source dir: /home/pako/Desktop/GitLab/library/media_player_qml_cmake or binary dir: /home/pako/Desktop/GitLab/library/media_player_qml_cmake/build
+  Something went wrong. Cannot find file: /home/pako/Qt5.6.0/5.6/gcc_64/include/QtCore/qobject.h in source dir: /home/pako/Desktop/GitLab/library/media_player_qml_cmake or binary dir: /home/pako/Desktop/GitLab/library/media_player_qml_cmake/build
+  Something went wrong. Cannot find file: /home/pako/Qt5.6.0/5.6/gcc_64/include/QtCore/qflags.h in source dir: /home/pako/Desktop/GitLab/library/media_player_qml_cmake or binary dir: /home/pako/Desktop/GitLab/library/media_player_qml_cmake/build
+  Something went wrong. Cannot find file: /home/pako/Qt5.6.0/5.6/gcc_64/include/QtCore/qurl.h in source dir: /home/pako/Desktop/GitLab/library/media_player_qml_cmake or binary dir: /home/pako/Desktop/GitLab/library/media_player_qml_cmake/build
+  Something went wrong. Cannot find file: /home/pako/Qt5.6.0/5.6/gcc_64/include/QtCore/qarraydata.h in source dir: /home/pako/Desktop/GitLab/library/media_player_qml_cmake or binary dir: /home/pako/Desktop/GitLab/library/media_player_qml_cmake/build
+  Something went wrong. Cannot find file: /home/pako/Qt5.6.0/5.6/gcc_64/include/QtCore/qbasicatomic.h in source dir: /home/pako/Desktop/GitLab/library/media_player_qml_cmake or binary dir: /home/pako/Desktop/GitLab/library/media_player_qml_cmake/build
+  Something went wrong. Cannot find file: /home/pako/Qt5.6.0/5.6/gcc_64/include/QtCore/qgenericatomic.h in source dir: /home/pako/Desktop/GitLab/library/media_player_qml_cmake or binary dir: /home/pako/Desktop/GitLab/library/media_player_qml_cmake/build
+  Something went wrong. Cannot find file: /home/pako/Qt5.6.0/5.6/gcc_64/include/QtCore/qatomic.h in source dir: /home/pako/Desktop/GitLab/library/media_player_qml_cmake or binary dir: /home/pako/Desktop/GitLab/library/media_player_qml_cmake/build
+  Something went wrong. Cannot find file: /home/pako/Qt5.6.0/5.6/gcc_64/include/QtCore/qstring.h in source dir: /home/pako/Desktop/GitLab/library/media_player_qml_cmake or binary dir: /home/pako/Desktop/GitLab/library/media_player_qml_cmake/build
+  Something went wrong. Cannot find file: /home/pako/Qt5.6.0/5.6/gcc_64/include/QtCore/qbytearray.h in source dir: /home/pako/Desktop/GitLab/library/media_player_qml_cmake or binary dir: /home/pako/Desktop/GitLab/library/media_player_qml_cmake/build
+  Something went wrong. Cannot find file: /usr/include/c++/4.9/ext/atomicity.h in source dir: /home/pako/Desktop/GitLab/library/media_player_qml_cmake or binary dir: /home/pako/Desktop/GitLab/library/media_player_qml_cmake/build
+  Something went wrong. Cannot find file: /usr/include/x86_64-linux-gnu/c++/4.9/bits/gthr-default.h in source dir: /home/pako/Desktop/GitLab/library/media_player_qml_cmake or binary dir: /home/pako/Desktop/GitLab/library/media_player_qml_cmake/build
+  Something went wrong. Cannot find file: /home/pako/Qt5.6.0/5.6/gcc_64/include/QtCore/qrefcount.h in source dir: /home/pako/Desktop/GitLab/library/media_player_qml_cmake or binary dir: /home/pako/Desktop/GitLab/library/media_player_qml_cmake/build
+* Run coverage for: /home/pako/Desktop/GitLab/library/media_player_qml_cmake/build/CMakeFiles/music_player.dir
+  Command: "/usr/bin/gcov" -l -o "/home/pako/Desktop/GitLab/library/media_player_qml_cmake/build/CMakeFiles/music_player.dir" "/home/pako/Desktop/GitLab/library/media_player_qml_cmake/build/CMakeFiles/music_player.dir/qrc_qml.cpp.gcda"
+  Output: File '/home/pako/Desktop/GitLab/library/media_player_qml_cmake/build/qrc_qml.cpp'
+Lines executed:100.00% of 10
+Creating 'qrc_qml.cpp.gcda##qrc_qml.cpp.gcov'
+
+
+  Errors: /home/pako/Desktop/GitLab/library/media_player_qml_cmake/build/CMakeFiles/music_player.dir/qrc_qml.cpp.gcno:version '409*', prefer '408*'
+/home/pako/Desktop/GitLab/library/media_player_qml_cmake/build/CMakeFiles/music_player.dir/qrc_qml.cpp.gcda:version '409*', prefer version '408*'
+
+  produced in source dir: /home/pako/Desktop/GitLab/library/media_player_qml_cmake/build/qrc_qml.cpp
+* Run coverage for: /home/pako/Desktop/GitLab/library/media_player_qml_cmake/build/CMakeFiles/music_player.dir
+  Command: "/usr/bin/gcov" -l -o "/home/pako/Desktop/GitLab/library/media_player_qml_cmake/build/CMakeFiles/music_player.dir" "/home/pako/Desktop/GitLab/library/media_player_qml_cmake/build/CMakeFiles/music_player.dir/music_player_automoc.cpp.gcda"
+  Output: File '/home/pako/Desktop/GitLab/library/media_player_qml_cmake/build/moc_mediaplayer.cpp'
+Lines executed:39.64% of 111
+Creating 'music_player_automoc.cpp.gcda##moc_mediaplayer.cpp.gcov'
+
+File '/usr/include/c++/4.9/iostream'
+Lines executed:100.00% of 1
+Creating 'music_player_automoc.cpp.gcda##iostream.gcov'
+
+File '/home/pako/Qt5.6.0/5.6/gcc_64/include/QtCore/qatomic_x86.h'
+Lines executed:0.00% of 6
+Creating 'music_player_automoc.cpp.gcda##qatomic_x86.h.gcov'
+
+File '/home/pako/Qt5.6.0/5.6/gcc_64/include/QtCore/qscopedpointer.h'
+Lines executed:100.00% of 2
+Creating 'music_player_automoc.cpp.gcda##qscopedpointer.h.gcov'
+
+File '/home/pako/Qt5.6.0/5.6/gcc_64/include/QtCore/qarraydata.h'
+Lines executed:0.00% of 3
+Creating 'music_player_automoc.cpp.gcda##qarraydata.h.gcov'
+
+File '/home/pako/Qt5.6.0/5.6/gcc_64/include/QtCore/qbasicatomic.h'
+Lines executed:0.00% of 3
+Creating 'music_player_automoc.cpp.gcda##qbasicatomic.h.gcov'
+
+File '/home/pako/Qt5.6.0/5.6/gcc_64/include/QtCore/qgenericatomic.h'
+Lines executed:0.00% of 1
+Creating 'music_player_automoc.cpp.gcda##qgenericatomic.h.gcov'
+
+File '/home/pako/Qt5.6.0/5.6/gcc_64/include/QtCore/qstring.h'
+Lines executed:0.00% of 3
+Creating 'music_player_automoc.cpp.gcda##qstring.h.gcov'
+
+File '/home/pako/Qt5.6.0/5.6/gcc_64/include/QtCore/qrefcount.h'
+Lines executed:0.00% of 14
+Creating 'music_player_automoc.cpp.gcda##qrefcount.h.gcov'
+
+
+  Errors: /home/pako/Desktop/GitLab/library/media_player_qml_cmake/build/CMakeFiles/music_player.dir/music_player_automoc.cpp.gcno:version '409*', prefer '408*'
+/home/pako/Desktop/GitLab/library/media_player_qml_cmake/build/CMakeFiles/music_player.dir/music_player_automoc.cpp.gcda:version '409*', prefer version '408*'
+
+  produced in source dir: /home/pako/Desktop/GitLab/library/media_player_qml_cmake/build/moc_mediaplayer.cpp
+  Something went wrong. Cannot find file: /home/pako/Qt5.6.0/5.6/gcc_64/include/QtCore/qscopedpointer.h in source dir: /home/pako/Desktop/GitLab/library/media_player_qml_cmake or binary dir: /home/pako/Desktop/GitLab/library/media_player_qml_cmake/build
+* Run coverage for: /home/pako/Desktop/GitLab/library/media_player_qml_cmake/build/CMakeFiles/music_player.dir
+  Command: "/usr/bin/gcov" -l -o "/home/pako/Desktop/GitLab/library/media_player_qml_cmake/build/CMakeFiles/music_player.dir" "/home/pako/Desktop/GitLab/library/media_player_qml_cmake/build/CMakeFiles/music_player.dir/main.cpp.gcda"
+  Output: File '/home/pako/Desktop/GitLab/library/media_player_qml_cmake/main.cpp'
+Lines executed:100.00% of 8
+Creating 'main.cpp.gcda##main.cpp.gcov'
+
+File '/usr/include/c++/4.9/iostream'
+Lines executed:100.00% of 1
+Creating 'main.cpp.gcda##iostream.gcov'
+
+File '/home/pako/Qt5.6.0/5.6/gcc_64/include/QtCore/qatomic_x86.h'
+Lines executed:100.00% of 3
+Creating 'main.cpp.gcda##qatomic_x86.h.gcov'
+
+File '/home/pako/Qt5.6.0/5.6/gcc_64/include/QtCore/qarraydata.h'
+Lines executed:100.00% of 3
+Creating 'main.cpp.gcda##qarraydata.h.gcov'
+
+File '/home/pako/Qt5.6.0/5.6/gcc_64/include/QtCore/qbasicatomic.h'
+Lines executed:100.00% of 2
+Creating 'main.cpp.gcda##qbasicatomic.h.gcov'
+
+File '/home/pako/Qt5.6.0/5.6/gcc_64/include/QtCore/qgenericatomic.h'
+Lines executed:100.00% of 1
+Creating 'main.cpp.gcda##qgenericatomic.h.gcov'
+
+File '/home/pako/Qt5.6.0/5.6/gcc_64/include/QtCore/qstring.h'
+Lines executed:100.00% of 6
+Creating 'main.cpp.gcda##qstring.h.gcov'
+
+File '/home/pako/Qt5.6.0/5.6/gcc_64/include/QtCore/qrefcount.h'
+Lines executed:85.71% of 7
+Creating 'main.cpp.gcda##qrefcount.h.gcov'
+
+
+  Errors: /home/pako/Desktop/GitLab/library/media_player_qml_cmake/build/CMakeFiles/music_player.dir/main.cpp.gcno:version '409*', prefer '408*'
+/home/pako/Desktop/GitLab/library/media_player_qml_cmake/build/CMakeFiles/music_player.dir/main.cpp.gcda:version '409*', prefer version '408*'
+
+  produced in source dir: /home/pako/Desktop/GitLab/library/media_player_qml_cmake/main.cpp
+	Covered LOC:         111
+	Not covered LOC:     103
+	Total LOC:           214
+	Percentage Coverage: 51.87%

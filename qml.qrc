@@ -1,0 +1,30 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>FileDelegate.qml</file>
+        <file>FileBrowser.qml</file>
+        <file>images/backgroundjpg</file>
+        <file>images/delete.png</file>
+        <file>images/infoBar.png</file>
+        <file>images/next.png</file>
+        <file>images/nextPressed.png</file>
+        <file>images/openFile.png</file>
+        <file>images/openFilePressed.png</file>
+        <file>images/openTracklist.png</file>
+        <file>images/openTracklistPressed.png</file>
+        <file>images/openTree.png</file>
+        <file>images/openTreePressed.png</file>
+        <file>images/pause.png</file>
+        <file>images/pausePressed.png</file>
+        <file>images/play.png</file>
+        <file>images/playPressed.png</file>
+        <file>images/previous.png</file>
+        <file>images/previousPressed.png</file>
+        <file>images/rightBar.png</file>
+        <file>images/secondBackground.png</file>
+        <file>images/showButton.png</file>
+        <file>images/stop.png</file>
+        <file>images/stopPressed.png</file>
+        <file>images/topBar.png</file>
+    </qresource>
+</RCC>

@@ -1,0 +1,639 @@
+        -:    0:Source:/home/pako/Qt5.6.0/5.6/gcc_64/include/QtCore/qobjectdefs_impl.h
+        -:    0:Graph:/home/pako/Desktop/GitLab/library/media_player_qml_cmake/build/CMakeFiles/music_player.dir/src/mediaplayer.cpp.gcno
+        -:    0:Data:/home/pako/Desktop/GitLab/library/media_player_qml_cmake/build/CMakeFiles/music_player.dir/src/mediaplayer.cpp.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:/****************************************************************************
+        -:    2:**
+        -:    3:** Copyright (C) 2015 The Qt Company Ltd.
+        -:    4:** Copyright (C) 2013 Olivier Goffart <ogoffart@woboq.com>
+        -:    5:** Contact: http://www.qt.io/licensing/
+        -:    6:**
+        -:    7:** This file is part of the QtCore module of the Qt Toolkit.
+        -:    8:**
+        -:    9:** $QT_BEGIN_LICENSE:LGPL21$
+        -:   10:** Commercial License Usage
+        -:   11:** Licensees holding valid commercial Qt licenses may use this file in
+        -:   12:** accordance with the commercial license agreement provided with the
+        -:   13:** Software or, alternatively, in accordance with the terms contained in
+        -:   14:** a written agreement between you and The Qt Company. For licensing terms
+        -:   15:** and conditions see http://www.qt.io/terms-conditions. For further
+        -:   16:** information use the contact form at http://www.qt.io/contact-us.
+        -:   17:**
+        -:   18:** GNU Lesser General Public License Usage
+        -:   19:** Alternatively, this file may be used under the terms of the GNU Lesser
+        -:   20:** General Public License version 2.1 or version 3 as published by the Free
+        -:   21:** Software Foundation and appearing in the file LICENSE.LGPLv21 and
+        -:   22:** LICENSE.LGPLv3 included in the packaging of this file. Please review the
+        -:   23:** following information to ensure the GNU Lesser General Public License
+        -:   24:** requirements will be met: https://www.gnu.org/licenses/lgpl.html and
+        -:   25:** http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
+        -:   26:**
+        -:   27:** As a special exception, The Qt Company gives you certain additional
+        -:   28:** rights. These rights are described in The Qt Company LGPL Exception
+        -:   29:** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
+        -:   30:**
+        -:   31:** $QT_END_LICENSE$
+        -:   32:**
+        -:   33:****************************************************************************/
+        -:   34:
+        -:   35:#ifndef Q_QDOC
+        -:   36:
+        -:   37:#ifndef QOBJECTDEFS_H
+        -:   38:#error Do not include qobjectdefs_impl.h directly
+        -:   39:#include <QtCore/qnamespace.h>
+        -:   40:#endif
+        -:   41:
+        -:   42:#if 0
+        -:   43:#pragma qt_sync_skip_header_check
+        -:   44:#pragma qt_sync_stop_processing
+        -:   45:#endif
+        -:   46:
+        -:   47:QT_BEGIN_NAMESPACE
+        -:   48:
+        -:   49:
+        -:   50:namespace QtPrivate {
+        -:   51:    template <typename T> struct RemoveRef { typedef T Type; };
+        -:   52:    template <typename T> struct RemoveRef<T&> { typedef T Type; };
+        -:   53:    template <typename T> struct RemoveConstRef { typedef T Type; };
+        -:   54:    template <typename T> struct RemoveConstRef<const T&> { typedef T Type; };
+        -:   55:
+        -:   56:    /*
+        -:   57:       The following List classes are used to help to handle the list of arguments.
+        -:   58:       It follow the same principles as the lisp lists.
+        -:   59:       List_Left<L,N> take a list and a number as a parameter and returns (via the Value typedef,
+        -:   60:       the list composed of the first N element of the list
+        -:   61:     */
+        -:   62:#ifndef Q_COMPILER_VARIADIC_TEMPLATES
+        -:   63:    template <typename Head, typename Tail> struct List { typedef Head Car; typedef Tail Cdr; };
+        -:   64:    template <typename L, int N> struct List_Left { typedef List<typename L::Car, typename List_Left<typename L::Cdr, N - 1>::Value > Value; };
+        -:   65:    template <typename L> struct List_Left<L,0> { typedef void Value; };
+        -:   66:#else
+        -:   67:    // With variadic template, lists are represented using a variadic template argument instead of the lisp way
+        -:   68:    template <typename...> struct List {};
+        -:   69:    template <typename Head, typename... Tail> struct List<Head, Tail...> { typedef Head Car; typedef List<Tail...> Cdr; };
+        -:   70:    template <typename, typename> struct List_Append;
+        -:   71:    template <typename... L1, typename...L2> struct List_Append<List<L1...>, List<L2...>> { typedef List<L1..., L2...> Value; };
+        -:   72:    template <typename L, int N> struct List_Left {
+        -:   73:        typedef typename List_Append<List<typename L::Car>,typename List_Left<typename L::Cdr, N - 1>::Value>::Value Value;
+        -:   74:    };
+        -:   75:    template <typename L> struct List_Left<L, 0> { typedef List<> Value; };
+        -:   76:#endif
+        -:   77:    // List_Select<L,N> returns (via typedef Value) the Nth element of the list L
+        -:   78:    template <typename L, int N> struct List_Select { typedef typename List_Select<typename L::Cdr, N - 1>::Value Value; };
+        -:   79:    template <typename L> struct List_Select<L,0> { typedef typename L::Car Value; };
+        -:   80:
+        -:   81:    /*
+        -:   82:       trick to set the return value of a slot that works even if the signal or the slot returns void
+        -:   83:       to be used like     function(), ApplyReturnValue<ReturnType>(&return_value)
+        -:   84:       if function() returns a value, the operator,(T, ApplyReturnValue<ReturnType>) is called, but if it
+        -:   85:       returns void, the builtin one is used without an error.
+        -:   86:    */
+        -:   87:    template <typename T>
+        -:   88:    struct ApplyReturnValue {
+        -:   89:        void *data;
+        2:   90:        explicit ApplyReturnValue(void *data_) : data(data_) {}
+        -:   91:    };
+        -:   92:    template<typename T, typename U>
+        -:   93:    void operator,(const T &value, const ApplyReturnValue<U> &container) {
+        -:   94:        if (container.data)
+        -:   95:            *reinterpret_cast<U*>(container.data) = value;
+        -:   96:    }
+        -:   97:#ifdef Q_COMPILER_RVALUE_REFS
+        -:   98:    template<typename T, typename U>
+        -:   99:    void operator,(T &&value, const ApplyReturnValue<U> &container) {
+        -:  100:        if (container.data)
+        -:  101:            *reinterpret_cast<U*>(container.data) = value;
+        -:  102:    }
+        -:  103:#endif
+        -:  104:    template<typename T>
+        -:  105:    void operator,(T, const ApplyReturnValue<void> &) {}
+        -:  106:
+        -:  107:
+        -:  108:    /*
+        -:  109:      The FunctionPointer<Func> struct is a type trait for function pointer.
+        -:  110:        - ArgumentCount  is the number of argument, or -1 if it is unknown
+        -:  111:        - the Object typedef is the Object of a pointer to member function
+        -:  112:        - the Arguments typedef is the list of argument (in a QtPrivate::List)
+        -:  113:        - the Function typedef is an alias to the template parameter Func
+        -:  114:        - the call<Args, R>(f,o,args) method is used to call that slot
+        -:  115:            Args is the list of argument of the signal
+        -:  116:            R is the return type of the signal
+        -:  117:            f is the function pointer
+        -:  118:            o is the receiver object
+        -:  119:            and args is the array of pointer to arguments, as used in qt_metacall
+        -:  120:
+        -:  121:       The Functor<Func,N> struct is the helper to call a functor of N argument.
+        -:  122:       its call function is the same as the FunctionPointer::call function.
+        -:  123:     */
+        -:  124:#ifndef Q_COMPILER_VARIADIC_TEMPLATES
+        -:  125:    template<typename Func> struct FunctionPointer { enum {ArgumentCount = -1, IsPointerToMemberFunction = false}; };
+        -:  126:    //Pointers to member functions
+        -:  127:    template<class Obj, typename Ret> struct FunctionPointer<Ret (Obj::*) ()>
+        -:  128:    {
+        -:  129:        typedef Obj Object;
+        -:  130:        typedef void Arguments;
+        -:  131:        typedef Ret ReturnType;
+        -:  132:        typedef Ret (Obj::*Function) ();
+        -:  133:        enum {ArgumentCount = 0, IsPointerToMemberFunction = true};
+        -:  134:        template <typename Args, typename R>
+        -:  135:        static void call(Function f, Obj *o, void **arg) { (o->*f)(), ApplyReturnValue<R>(arg[0]); }
+        -:  136:    };
+        -:  137:    template<class Obj, typename Ret, typename Arg1> struct FunctionPointer<Ret (Obj::*) (Arg1)>
+        -:  138:    {
+        -:  139:        typedef Obj Object;
+        -:  140:        typedef List<Arg1, void> Arguments;
+        -:  141:        typedef Ret ReturnType;
+        -:  142:        typedef Ret (Obj::*Function) (Arg1);
+        -:  143:        enum {ArgumentCount = 1, IsPointerToMemberFunction = true};
+        -:  144:        template <typename Args, typename R>
+        2:  145:        static void call(Function f, Obj *o, void **arg) {
+        2:  146:            (o->*f)((*reinterpret_cast<typename RemoveRef<typename Args::Car>::Type *>(arg[1]))), ApplyReturnValue<R>(arg[0]);
+        2:  147:        }
+        -:  148:    };
+        -:  149:    template<class Obj, typename Ret, typename Arg1, typename Arg2> struct FunctionPointer<Ret (Obj::*) (Arg1, Arg2)>
+        -:  150:    {
+        -:  151:        typedef Obj Object;
+        -:  152:        typedef List<Arg1, List<Arg2, void> >  Arguments;
+        -:  153:        typedef Ret ReturnType;
+        -:  154:        typedef Ret (Obj::*Function) (Arg1, Arg2);
+        -:  155:        enum {ArgumentCount = 2, IsPointerToMemberFunction = true};
+        -:  156:        template <typename Args, typename R>
+        -:  157:        static void call(Function f, Obj *o, void **arg) {
+        -:  158:            (o->*f)( *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 0>::Value>::Type *>(arg[1]),
+        -:  159:                     *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 1>::Value>::Type *>(arg[2])), ApplyReturnValue<R>(arg[0]);
+        -:  160:        }
+        -:  161:    };
+        -:  162:    template<class Obj, typename Ret, typename Arg1, typename Arg2, typename Arg3> struct FunctionPointer<Ret (Obj::*) (Arg1, Arg2, Arg3)>
+        -:  163:    {
+        -:  164:        typedef Obj Object;
+        -:  165:        typedef List<Arg1, List<Arg2, List<Arg3, void> > >  Arguments;
+        -:  166:        typedef Ret ReturnType;
+        -:  167:        typedef Ret (Obj::*Function) (Arg1, Arg2, Arg3);
+        -:  168:        enum {ArgumentCount = 3, IsPointerToMemberFunction = true};
+        -:  169:        template <typename Args, typename R>
+        -:  170:        static void call(Function f, Obj *o, void **arg) {
+        -:  171:            (o->*f)( *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 0>::Value>::Type *>(arg[1]),
+        -:  172:                     *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 1>::Value>::Type *>(arg[2]),
+        -:  173:                     *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 2>::Value>::Type *>(arg[3])), ApplyReturnValue<R>(arg[0]);
+        -:  174:        }
+        -:  175:    };
+        -:  176:    template<class Obj, typename Ret, typename Arg1, typename Arg2, typename Arg3, typename Arg4> struct FunctionPointer<Ret (Obj::*) (Arg1, Arg2, Arg3, Arg4)>
+        -:  177:    {
+        -:  178:        typedef Obj Object;
+        -:  179:        typedef List<Arg1, List<Arg2, List<Arg3, List<Arg4, void> > > >  Arguments;
+        -:  180:        typedef Ret ReturnType;
+        -:  181:        typedef Ret (Obj::*Function) (Arg1, Arg2, Arg3, Arg4);
+        -:  182:        enum {ArgumentCount = 4, IsPointerToMemberFunction = true};
+        -:  183:        template <typename Args, typename R>
+        -:  184:        static void call(Function f, Obj *o, void **arg) {
+        -:  185:            (o->*f)( *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 0>::Value>::Type *>(arg[1]),
+        -:  186:                     *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 1>::Value>::Type *>(arg[2]),
+        -:  187:                     *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 2>::Value>::Type *>(arg[3]),
+        -:  188:                     *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 3>::Value>::Type *>(arg[4])), ApplyReturnValue<R>(arg[0]);
+        -:  189:        }
+        -:  190:    };
+        -:  191:    template<class Obj, typename Ret, typename Arg1, typename Arg2, typename Arg3, typename Arg4, typename Arg5> struct FunctionPointer<Ret (Obj::*) (Arg1, Arg2, Arg3, Arg4, Arg5)>
+        -:  192:    {
+        -:  193:        typedef Obj Object;
+        -:  194:        typedef List<Arg1, List<Arg2, List<Arg3, List<Arg4, List<Arg5, void> > > > >  Arguments;
+        -:  195:        typedef Ret ReturnType;
+        -:  196:        typedef Ret (Obj::*Function) (Arg1, Arg2, Arg3, Arg4, Arg5);
+        -:  197:        enum {ArgumentCount = 5, IsPointerToMemberFunction = true};
+        -:  198:        template <typename Args, typename R>
+        -:  199:        static void call(Function f, Obj *o, void **arg) {
+        -:  200:            (o->*f)( *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 0>::Value>::Type *>(arg[1]),
+        -:  201:                     *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 1>::Value>::Type *>(arg[2]),
+        -:  202:                     *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 2>::Value>::Type *>(arg[3]),
+        -:  203:                     *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 3>::Value>::Type *>(arg[4]),
+        -:  204:                     *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 4>::Value>::Type *>(arg[5])), ApplyReturnValue<R>(arg[0]);
+        -:  205:        }
+        -:  206:    };
+        -:  207:    template<class Obj, typename Ret, typename Arg1, typename Arg2, typename Arg3, typename Arg4, typename Arg5, typename Arg6>
+        -:  208:    struct FunctionPointer<Ret (Obj::*) (Arg1, Arg2, Arg3, Arg4, Arg5, Arg6)>
+        -:  209:    {
+        -:  210:        typedef Obj Object;
+        -:  211:        typedef List<Arg1, List<Arg2, List<Arg3, List<Arg4, List<Arg5, List<Arg6, void> > > > > >  Arguments;
+        -:  212:        typedef Ret ReturnType;
+        -:  213:        typedef Ret (Obj::*Function) (Arg1, Arg2, Arg3, Arg4, Arg5, Arg6);
+        -:  214:        enum {ArgumentCount = 6, IsPointerToMemberFunction = true};
+        -:  215:        template <typename Args, typename R>
+        -:  216:        static void call(Function f, Obj *o, void **arg) {
+        -:  217:            (o->*f)( *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 0>::Value>::Type *>(arg[1]),
+        -:  218:                     *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 1>::Value>::Type *>(arg[2]),
+        -:  219:                     *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 2>::Value>::Type *>(arg[3]),
+        -:  220:                     *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 3>::Value>::Type *>(arg[4]),
+        -:  221:                     *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 4>::Value>::Type *>(arg[5]),
+        -:  222:                     *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 5>::Value>::Type *>(arg[6])), ApplyReturnValue<R>(arg[0]);
+        -:  223:        }
+        -:  224:    };
+        -:  225:
+        -:  226:    //Pointers to const member functions
+        -:  227:    template<class Obj, typename Ret> struct FunctionPointer<Ret (Obj::*) () const>
+        -:  228:    {
+        -:  229:        typedef Obj Object;
+        -:  230:        typedef void Arguments;
+        -:  231:        typedef Ret ReturnType;
+        -:  232:        typedef Ret (Obj::*Function) () const;
+        -:  233:        enum {ArgumentCount = 0, IsPointerToMemberFunction = true};
+        -:  234:        template <typename Args, typename R>
+        -:  235:        static void call(Function f, Obj *o, void **arg) { (o->*f)(), ApplyReturnValue<R>(arg[0]); }
+        -:  236:    };
+        -:  237:    template<class Obj, typename Ret, typename Arg1> struct FunctionPointer<Ret (Obj::*) (Arg1) const>
+        -:  238:    {
+        -:  239:        typedef Obj Object;
+        -:  240:        typedef List<Arg1, void> Arguments;
+        -:  241:        typedef Ret ReturnType;
+        -:  242:        typedef Ret (Obj::*Function) (Arg1) const;
+        -:  243:        enum {ArgumentCount = 1, IsPointerToMemberFunction = true};
+        -:  244:        template <typename Args, typename R>
+        -:  245:        static void call(Function f, Obj *o, void **arg) {
+        -:  246:            (o->*f)((*reinterpret_cast<typename RemoveRef<typename Args::Car>::Type *>(arg[1]))), ApplyReturnValue<R>(arg[0]);
+        -:  247:        }
+        -:  248:    };
+        -:  249:    template<class Obj, typename Ret, typename Arg1, typename Arg2> struct FunctionPointer<Ret (Obj::*) (Arg1, Arg2) const>
+        -:  250:    {
+        -:  251:        typedef Obj Object;
+        -:  252:        typedef List<Arg1, List<Arg2, void> >  Arguments;
+        -:  253:        typedef Ret ReturnType;
+        -:  254:        typedef Ret (Obj::*Function) (Arg1, Arg2) const;
+        -:  255:        enum {ArgumentCount = 2, IsPointerToMemberFunction = true};
+        -:  256:        template <typename Args, typename R>
+        -:  257:        static void call(Function f, Obj *o, void **arg) {
+        -:  258:            (o->*f)( *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 0>::Value>::Type *>(arg[1]),
+        -:  259:                     *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 1>::Value>::Type *>(arg[2])), ApplyReturnValue<R>(arg[0]);
+        -:  260:        }
+        -:  261:    };
+        -:  262:    template<class Obj, typename Ret, typename Arg1, typename Arg2, typename Arg3> struct FunctionPointer<Ret (Obj::*) (Arg1, Arg2, Arg3) const>
+        -:  263:    {
+        -:  264:        typedef Obj Object;
+        -:  265:        typedef List<Arg1, List<Arg2, List<Arg3, void> > >  Arguments;
+        -:  266:        typedef Ret ReturnType;
+        -:  267:        typedef Ret (Obj::*Function) (Arg1, Arg2, Arg3) const;
+        -:  268:        enum {ArgumentCount = 3, IsPointerToMemberFunction = true};
+        -:  269:        template <typename Args, typename R>
+        -:  270:        static void call(Function f, Obj *o, void **arg) {
+        -:  271:            (o->*f)( *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 0>::Value>::Type *>(arg[1]),
+        -:  272:                     *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 1>::Value>::Type *>(arg[2]),
+        -:  273:                     *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 2>::Value>::Type *>(arg[3])), ApplyReturnValue<R>(arg[0]);
+        -:  274:        }
+        -:  275:    };
+        -:  276:    template<class Obj, typename Ret, typename Arg1, typename Arg2, typename Arg3, typename Arg4> struct FunctionPointer<Ret (Obj::*) (Arg1, Arg2, Arg3, Arg4) const>
+        -:  277:    {
+        -:  278:        typedef Obj Object;
+        -:  279:        typedef List<Arg1, List<Arg2, List<Arg3, List<Arg4, void> > > >  Arguments;
+        -:  280:        typedef Ret ReturnType;
+        -:  281:        typedef Ret (Obj::*Function) (Arg1, Arg2, Arg3, Arg4) const;
+        -:  282:        enum {ArgumentCount = 4, IsPointerToMemberFunction = true};
+        -:  283:        template <typename Args, typename R>
+        -:  284:        static void call(Function f, Obj *o, void **arg) {
+        -:  285:            (o->*f)( *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 0>::Value>::Type *>(arg[1]),
+        -:  286:                     *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 1>::Value>::Type *>(arg[2]),
+        -:  287:                     *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 2>::Value>::Type *>(arg[3]),
+        -:  288:                     *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 3>::Value>::Type *>(arg[4])), ApplyReturnValue<R>(arg[0]);
+        -:  289:        }
+        -:  290:    };
+        -:  291:    template<class Obj, typename Ret, typename Arg1, typename Arg2, typename Arg3, typename Arg4, typename Arg5> struct FunctionPointer<Ret (Obj::*) (Arg1, Arg2, Arg3, Arg4, Arg5) const>
+        -:  292:    {
+        -:  293:        typedef Obj Object;
+        -:  294:        typedef List<Arg1, List<Arg2, List<Arg3, List<Arg4, List<Arg5, void> > > > >  Arguments;
+        -:  295:        typedef Ret ReturnType;
+        -:  296:        typedef Ret (Obj::*Function) (Arg1, Arg2, Arg3, Arg4, Arg5) const;
+        -:  297:        enum {ArgumentCount = 5, IsPointerToMemberFunction = true};
+        -:  298:        template <typename Args, typename R>
+        -:  299:        static void call(Function f, Obj *o, void **arg) {
+        -:  300:            (o->*f)( *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 0>::Value>::Type *>(arg[1]),
+        -:  301:                     *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 1>::Value>::Type *>(arg[2]),
+        -:  302:                     *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 2>::Value>::Type *>(arg[3]),
+        -:  303:                     *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 3>::Value>::Type *>(arg[4]),
+        -:  304:                     *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 4>::Value>::Type *>(arg[5])), ApplyReturnValue<R>(arg[0]);
+        -:  305:        }
+        -:  306:    };
+        -:  307:    template<class Obj, typename Ret, typename Arg1, typename Arg2, typename Arg3, typename Arg4, typename Arg5, typename Arg6>
+        -:  308:    struct FunctionPointer<Ret (Obj::*) (Arg1, Arg2, Arg3, Arg4, Arg5, Arg6) const>
+        -:  309:    {
+        -:  310:        typedef Obj Object;
+        -:  311:        typedef List<Arg1, List<Arg2, List<Arg3, List<Arg4, List<Arg5, List<Arg6, void> > > > > >  Arguments;
+        -:  312:        typedef Ret ReturnType;
+        -:  313:        typedef Ret (Obj::*Function) (Arg1, Arg2, Arg3, Arg4, Arg5, Arg6) const;
+        -:  314:        enum {ArgumentCount = 6, IsPointerToMemberFunction = true};
+        -:  315:        template <typename Args, typename R>
+        -:  316:        static void call(Function f, Obj *o, void **arg) {
+        -:  317:            (o->*f)( *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 0>::Value>::Type *>(arg[1]),
+        -:  318:                     *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 1>::Value>::Type *>(arg[2]),
+        -:  319:                     *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 2>::Value>::Type *>(arg[3]),
+        -:  320:                     *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 3>::Value>::Type *>(arg[4]),
+        -:  321:                     *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 4>::Value>::Type *>(arg[5]),
+        -:  322:                     *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 5>::Value>::Type *>(arg[6])), ApplyReturnValue<R>(arg[0]);
+        -:  323:        }
+        -:  324:    };
+        -:  325:
+        -:  326:    //Static functions
+        -:  327:    template<typename Ret> struct FunctionPointer<Ret (*) ()>
+        -:  328:    {
+        -:  329:        typedef void Arguments;
+        -:  330:        typedef Ret (*Function) ();
+        -:  331:        typedef Ret ReturnType;
+        -:  332:        enum {ArgumentCount = 0, IsPointerToMemberFunction = false};
+        -:  333:        template <typename Args, typename R>
+        -:  334:        static void call(Function f, void *, void **arg) { f(), ApplyReturnValue<R>(arg[0]); }
+        -:  335:    };
+        -:  336:    template<typename Ret, typename Arg1> struct FunctionPointer<Ret (*) (Arg1)>
+        -:  337:    {
+        -:  338:        typedef List<Arg1, void> Arguments;
+        -:  339:        typedef Ret ReturnType;
+        -:  340:        typedef Ret (*Function) (Arg1);
+        -:  341:        enum {ArgumentCount = 1, IsPointerToMemberFunction = false};
+        -:  342:        template <typename Args, typename R>
+        -:  343:        static void call(Function f, void *, void **arg)
+        -:  344:        { f(*reinterpret_cast<typename RemoveRef<typename List_Select<Args, 0>::Value>::Type *>(arg[1])), ApplyReturnValue<R>(arg[0]); }
+        -:  345:    };
+        -:  346:    template<typename Ret, typename Arg1, typename Arg2> struct FunctionPointer<Ret (*) (Arg1, Arg2)>
+        -:  347:    {
+        -:  348:        typedef List<Arg1, List<Arg2, void> > Arguments;
+        -:  349:        typedef Ret ReturnType;
+        -:  350:        typedef Ret (*Function) (Arg1, Arg2);
+        -:  351:        enum {ArgumentCount = 2, IsPointerToMemberFunction = false};
+        -:  352:        template <typename Args, typename R>
+        -:  353:        static void call(Function f, void *, void **arg) {
+        -:  354:            f(*reinterpret_cast<typename RemoveRef<typename List_Select<Args, 0>::Value>::Type *>(arg[1]),
+        -:  355:              *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 1>::Value>::Type *>(arg[2])), ApplyReturnValue<R>(arg[0]); }
+        -:  356:    };
+        -:  357:    template<typename Ret, typename Arg1, typename Arg2, typename Arg3> struct FunctionPointer<Ret (*) (Arg1, Arg2, Arg3)>
+        -:  358:    {
+        -:  359:        typedef List<Arg1, List<Arg2, List<Arg3, void> > >  Arguments;
+        -:  360:        typedef Ret ReturnType;
+        -:  361:        typedef Ret (*Function) (Arg1, Arg2, Arg3);
+        -:  362:        enum {ArgumentCount = 3, IsPointerToMemberFunction = false};
+        -:  363:        template <typename Args, typename R>
+        -:  364:        static void call(Function f, void *, void **arg) {
+        -:  365:            f(       *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 0>::Value>::Type *>(arg[1]),
+        -:  366:                     *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 1>::Value>::Type *>(arg[2]),
+        -:  367:                     *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 2>::Value>::Type *>(arg[3])), ApplyReturnValue<R>(arg[0]);
+        -:  368:        }
+        -:  369:    };
+        -:  370:    template<typename Ret, typename Arg1, typename Arg2, typename Arg3, typename Arg4> struct FunctionPointer<Ret (*) (Arg1, Arg2, Arg3, Arg4)>
+        -:  371:    {
+        -:  372:        typedef List<Arg1, List<Arg2, List<Arg3, List<Arg4, void> > > >  Arguments;
+        -:  373:        typedef Ret ReturnType;
+        -:  374:        typedef Ret (*Function) (Arg1, Arg2, Arg3, Arg4);
+        -:  375:        enum {ArgumentCount = 4, IsPointerToMemberFunction = false};
+        -:  376:        template <typename Args, typename R>
+        -:  377:        static void call(Function f, void *, void **arg) {
+        -:  378:            f(       *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 0>::Value>::Type *>(arg[1]),
+        -:  379:                     *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 1>::Value>::Type *>(arg[2]),
+        -:  380:                     *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 2>::Value>::Type *>(arg[3]),
+        -:  381:                     *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 3>::Value>::Type *>(arg[4])), ApplyReturnValue<R>(arg[0]);
+        -:  382:        }
+        -:  383:    };
+        -:  384:    template<typename Ret, typename Arg1, typename Arg2, typename Arg3, typename Arg4, typename Arg5> struct FunctionPointer<Ret (*) (Arg1, Arg2, Arg3, Arg4, Arg5)>
+        -:  385:    {
+        -:  386:        typedef List<Arg1, List<Arg2, List<Arg3,
+        -:  387:        List<Arg4, List<Arg5, void > > > > >  Arguments;
+        -:  388:        typedef Ret ReturnType;
+        -:  389:        typedef Ret (*Function) (Arg1, Arg2, Arg3, Arg4, Arg5);
+        -:  390:        enum {ArgumentCount = 5, IsPointerToMemberFunction = false};
+        -:  391:        template <typename Args, typename R>
+        -:  392:        static void call(Function f, void *, void **arg) {
+        -:  393:            f(       *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 0>::Value>::Type *>(arg[1]),
+        -:  394:                     *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 1>::Value>::Type *>(arg[2]),
+        -:  395:                     *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 2>::Value>::Type *>(arg[3]),
+        -:  396:                     *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 3>::Value>::Type *>(arg[4]),
+        -:  397:                     *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 4>::Value>::Type *>(arg[5])), ApplyReturnValue<R>(arg[0]);
+        -:  398:        }
+        -:  399:    };
+        -:  400:    template<typename Ret, typename Arg1, typename Arg2, typename Arg3, typename Arg4, typename Arg5, typename Arg6> struct FunctionPointer<Ret (*) (Arg1, Arg2, Arg3, Arg4, Arg5, Arg6)>
+        -:  401:    {
+        -:  402:        typedef List<Arg1, List<Arg2, List<Arg3, List<Arg4, List<Arg5, List<Arg6, void> > > > > >  Arguments;
+        -:  403:        typedef Ret ReturnType;
+        -:  404:        typedef Ret (*Function) (Arg1, Arg2, Arg3, Arg4, Arg5, Arg6);
+        -:  405:        enum {ArgumentCount = 6, IsPointerToMemberFunction = false};
+        -:  406:        template <typename Args, typename R>
+        -:  407:        static void call(Function f, void *, void **arg) {
+        -:  408:            f(       *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 0>::Value>::Type *>(arg[1]),
+        -:  409:                     *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 1>::Value>::Type *>(arg[2]),
+        -:  410:                     *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 2>::Value>::Type *>(arg[3]),
+        -:  411:                     *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 3>::Value>::Type *>(arg[4]),
+        -:  412:                     *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 4>::Value>::Type *>(arg[5]),
+        -:  413:                     *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 5>::Value>::Type *>(arg[6])), ApplyReturnValue<R>(arg[0]);
+        -:  414:        }
+        -:  415:    };
+        -:  416:
+        -:  417:    //Functors
+        -:  418:    template<typename F, int N> struct Functor;
+        -:  419:    template<typename Function> struct Functor<Function, 0>
+        -:  420:    {
+        -:  421:        template <typename Args, typename R>
+        -:  422:        static void call(Function &f, void *, void **arg) { f(), ApplyReturnValue<R>(arg[0]); }
+        -:  423:    };
+        -:  424:    template<typename Function> struct Functor<Function, 1>
+        -:  425:    {
+        -:  426:        template <typename Args, typename R>
+        -:  427:        static void call(Function &f, void *, void **arg) {
+        -:  428:            f(*reinterpret_cast<typename RemoveRef<typename List_Select<Args, 0>::Value>::Type *>(arg[1])), ApplyReturnValue<R>(arg[0]);
+        -:  429:        }
+        -:  430:    };
+        -:  431:    template<typename Function> struct Functor<Function, 2>
+        -:  432:    {
+        -:  433:        template <typename Args, typename R>
+        -:  434:        static void call(Function &f, void *, void **arg) {
+        -:  435:            f( *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 0>::Value>::Type *>(arg[1]),
+        -:  436:               *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 1>::Value>::Type *>(arg[2])), ApplyReturnValue<R>(arg[0]);
+        -:  437:        }
+        -:  438:    };
+        -:  439:    template<typename Function> struct Functor<Function, 3>
+        -:  440:    {
+        -:  441:        template <typename Args, typename R>
+        -:  442:        static void call(Function &f, void *, void **arg) {
+        -:  443:            f( *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 0>::Value>::Type *>(arg[1]),
+        -:  444:               *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 1>::Value>::Type *>(arg[2]),
+        -:  445:               *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 2>::Value>::Type *>(arg[3])), ApplyReturnValue<R>(arg[0]);
+        -:  446:        }
+        -:  447:    };
+        -:  448:    template<typename Function> struct Functor<Function, 4>
+        -:  449:    {
+        -:  450:        template <typename Args, typename R>
+        -:  451:        static void call(Function &f, void *, void **arg) {
+        -:  452:            f( *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 0>::Value>::Type *>(arg[1]),
+        -:  453:               *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 1>::Value>::Type *>(arg[2]),
+        -:  454:               *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 2>::Value>::Type *>(arg[3]),
+        -:  455:               *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 3>::Value>::Type *>(arg[4])), ApplyReturnValue<R>(arg[0]);
+        -:  456:        }
+        -:  457:    };
+        -:  458:    template<typename Function> struct Functor<Function, 5>
+        -:  459:    {
+        -:  460:        template <typename Args, typename R>
+        -:  461:        static void call(Function &f, void *, void **arg) {
+        -:  462:            f( *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 0>::Value>::Type *>(arg[1]),
+        -:  463:               *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 1>::Value>::Type *>(arg[2]),
+        -:  464:               *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 2>::Value>::Type *>(arg[3]),
+        -:  465:               *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 3>::Value>::Type *>(arg[4]),
+        -:  466:               *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 4>::Value>::Type *>(arg[5])), ApplyReturnValue<R>(arg[0]);
+        -:  467:        }
+        -:  468:    };
+        -:  469:    template<typename Function> struct Functor<Function, 6>
+        -:  470:    {
+        -:  471:        template <typename Args, typename R>
+        -:  472:        static void call(Function &f, void *, void **arg) {
+        -:  473:            f( *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 0>::Value>::Type *>(arg[1]),
+        -:  474:               *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 1>::Value>::Type *>(arg[2]),
+        -:  475:               *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 2>::Value>::Type *>(arg[3]),
+        -:  476:               *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 3>::Value>::Type *>(arg[4]),
+        -:  477:               *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 4>::Value>::Type *>(arg[5]),
+        -:  478:               *reinterpret_cast<typename RemoveRef<typename List_Select<Args, 5>::Value>::Type *>(arg[6])), ApplyReturnValue<R>(arg[0]);
+        -:  479:        }
+        -:  480:    };
+        -:  481:#else
+        -:  482:    template <int...> struct IndexesList {};
+        -:  483:    template <typename IndexList, int Right> struct IndexesAppend;
+        -:  484:    template <int... Left, int Right> struct IndexesAppend<IndexesList<Left...>, Right>
+        -:  485:    { typedef IndexesList<Left..., Right> Value; };
+        -:  486:    template <int N> struct Indexes
+        -:  487:    { typedef typename IndexesAppend<typename Indexes<N - 1>::Value, N - 1>::Value Value; };
+        -:  488:    template <> struct Indexes<0> { typedef IndexesList<> Value; };
+        -:  489:    template<typename Func> struct FunctionPointer { enum {ArgumentCount = -1, IsPointerToMemberFunction = false}; };
+        -:  490:
+        -:  491:    template <typename, typename, typename, typename> struct FunctorCall;
+        -:  492:    template <int... II, typename... SignalArgs, typename R, typename Function>
+        -:  493:    struct FunctorCall<IndexesList<II...>, List<SignalArgs...>, R, Function> {
+        -:  494:        static void call(Function f, void **arg) {
+        -:  495:            f((*reinterpret_cast<typename RemoveRef<SignalArgs>::Type *>(arg[II+1]))...), ApplyReturnValue<R>(arg[0]);
+        -:  496:        }
+        -:  497:    };
+        -:  498:    template <int... II, typename... SignalArgs, typename R, typename... SlotArgs, typename SlotRet, class Obj>
+        -:  499:    struct FunctorCall<IndexesList<II...>, List<SignalArgs...>, R, SlotRet (Obj::*)(SlotArgs...)> {
+        -:  500:        static void call(SlotRet (Obj::*f)(SlotArgs...), Obj *o, void **arg) {
+        -:  501:            (o->*f)((*reinterpret_cast<typename RemoveRef<SignalArgs>::Type *>(arg[II+1]))...), ApplyReturnValue<R>(arg[0]);
+        -:  502:        }
+        -:  503:    };
+        -:  504:    template <int... II, typename... SignalArgs, typename R, typename... SlotArgs, typename SlotRet, class Obj>
+        -:  505:    struct FunctorCall<IndexesList<II...>, List<SignalArgs...>, R, SlotRet (Obj::*)(SlotArgs...) const> {
+        -:  506:        static void call(SlotRet (Obj::*f)(SlotArgs...) const, Obj *o, void **arg) {
+        -:  507:            (o->*f)((*reinterpret_cast<typename RemoveRef<SignalArgs>::Type *>(arg[II+1]))...), ApplyReturnValue<R>(arg[0]);
+        -:  508:        }
+        -:  509:    };
+        -:  510:
+        -:  511:    template<class Obj, typename Ret, typename... Args> struct FunctionPointer<Ret (Obj::*) (Args...)>
+        -:  512:    {
+        -:  513:        typedef Obj Object;
+        -:  514:        typedef List<Args...>  Arguments;
+        -:  515:        typedef Ret ReturnType;
+        -:  516:        typedef Ret (Obj::*Function) (Args...);
+        -:  517:        enum {ArgumentCount = sizeof...(Args), IsPointerToMemberFunction = true};
+        -:  518:        template <typename SignalArgs, typename R>
+        -:  519:        static void call(Function f, Obj *o, void **arg) {
+        -:  520:            FunctorCall<typename Indexes<ArgumentCount>::Value, SignalArgs, R, Function>::call(f, o, arg);
+        -:  521:        }
+        -:  522:    };
+        -:  523:    template<class Obj, typename Ret, typename... Args> struct FunctionPointer<Ret (Obj::*) (Args...) const>
+        -:  524:    {
+        -:  525:        typedef Obj Object;
+        -:  526:        typedef List<Args...>  Arguments;
+        -:  527:        typedef Ret ReturnType;
+        -:  528:        typedef Ret (Obj::*Function) (Args...) const;
+        -:  529:        enum {ArgumentCount = sizeof...(Args), IsPointerToMemberFunction = true};
+        -:  530:        template <typename SignalArgs, typename R>
+        -:  531:        static void call(Function f, Obj *o, void **arg) {
+        -:  532:            FunctorCall<typename Indexes<ArgumentCount>::Value, SignalArgs, R, Function>::call(f, o, arg);
+        -:  533:        }
+        -:  534:    };
+        -:  535:
+        -:  536:    template<typename Ret, typename... Args> struct FunctionPointer<Ret (*) (Args...)>
+        -:  537:    {
+        -:  538:        typedef List<Args...> Arguments;
+        -:  539:        typedef Ret ReturnType;
+        -:  540:        typedef Ret (*Function) (Args...);
+        -:  541:        enum {ArgumentCount = sizeof...(Args), IsPointerToMemberFunction = false};
+        -:  542:        template <typename SignalArgs, typename R>
+        -:  543:        static void call(Function f, void *, void **arg) {
+        -:  544:            FunctorCall<typename Indexes<ArgumentCount>::Value, SignalArgs, R, Function>::call(f, arg);
+        -:  545:        }
+        -:  546:    };
+        -:  547:
+        -:  548:    template<typename Function, int N> struct Functor
+        -:  549:    {
+        -:  550:        template <typename SignalArgs, typename R>
+        -:  551:        static void call(Function &f, void *, void **arg) {
+        -:  552:            FunctorCall<typename Indexes<N>::Value, SignalArgs, R, Function>::call(f, arg);
+        -:  553:        }
+        -:  554:    };
+        -:  555:#endif
+        -:  556:
+        -:  557:    /*
+        -:  558:       Logic that check if the arguments of the slot matches the argument of the signal.
+        -:  559:       To be used like this:
+        -:  560:       Q_STATIC_ASSERT(CheckCompatibleArguments<FunctionPointer<Signal>::Arguments, FunctionPointer<Slot>::Arguments>::value)
+        -:  561:    */
+        -:  562:    template<typename A1, typename A2> struct AreArgumentsCompatible {
+        -:  563:        static int test(const typename RemoveRef<A2>::Type&);
+        -:  564:        static char test(...);
+        -:  565:        static const typename RemoveRef<A1>::Type &dummy();
+        -:  566:        enum { value = sizeof(test(dummy())) == sizeof(int) };
+        -:  567:    };
+        -:  568:    template<typename A1, typename A2> struct AreArgumentsCompatible<A1, A2&> { enum { value = false }; };
+        -:  569:    template<typename A> struct AreArgumentsCompatible<A&, A&> { enum { value = true }; };
+        -:  570:    // void as a return value
+        -:  571:    template<typename A> struct AreArgumentsCompatible<void, A> { enum { value = true }; };
+        -:  572:    template<typename A> struct AreArgumentsCompatible<A, void> { enum { value = true }; };
+        -:  573:    template<> struct AreArgumentsCompatible<void, void> { enum { value = true }; };
+        -:  574:
+        -:  575:#ifndef Q_COMPILER_VARIADIC_TEMPLATES
+        -:  576:    template <typename List1, typename List2> struct CheckCompatibleArguments { enum { value = false }; };
+        -:  577:    template <> struct CheckCompatibleArguments<void, void> { enum { value = true }; };
+        -:  578:    template <typename List1> struct CheckCompatibleArguments<List1, void> { enum { value = true }; };
+        -:  579:    template <typename Arg1, typename Arg2, typename Tail1, typename Tail2> struct CheckCompatibleArguments<List<Arg1, Tail1>, List<Arg2, Tail2> >
+        -:  580:    {
+        -:  581:        enum { value = AreArgumentsCompatible<typename RemoveConstRef<Arg1>::Type, typename RemoveConstRef<Arg2>::Type>::value
+        -:  582:                    && CheckCompatibleArguments<Tail1, Tail2>::value };
+        -:  583:    };
+        -:  584:#else
+        -:  585:    template <typename List1, typename List2> struct CheckCompatibleArguments { enum { value = false }; };
+        -:  586:    template <> struct CheckCompatibleArguments<List<>, List<>> { enum { value = true }; };
+        -:  587:    template <typename List1> struct CheckCompatibleArguments<List1, List<>> { enum { value = true }; };
+        -:  588:    template <typename Arg1, typename Arg2, typename... Tail1, typename... Tail2>
+        -:  589:    struct CheckCompatibleArguments<List<Arg1, Tail1...>, List<Arg2, Tail2...>>
+        -:  590:    {
+        -:  591:        enum { value = AreArgumentsCompatible<typename RemoveConstRef<Arg1>::Type, typename RemoveConstRef<Arg2>::Type>::value
+        -:  592:                    && CheckCompatibleArguments<List<Tail1...>, List<Tail2...>>::value };
+        -:  593:    };
+        -:  594:#endif
+        -:  595:
+        -:  596:#if defined(Q_COMPILER_DECLTYPE) && defined(Q_COMPILER_VARIADIC_TEMPLATES)
+        -:  597:    /*
+        -:  598:       Find the maximum number of arguments a functor object can take and be still compatible with
+        -:  599:       the arguments from the signal.
+        -:  600:       Value is the number of arguments, or -1 if nothing matches.
+        -:  601:     */
+        -:  602:    template <typename Functor, typename ArgList> struct ComputeFunctorArgumentCount;
+        -:  603:
+        -:  604:    template <typename Functor, typename ArgList, bool Done> struct ComputeFunctorArgumentCountHelper
+        -:  605:    { enum { Value = -1 }; };
+        -:  606:    template <typename Functor, typename First, typename... ArgList>
+        -:  607:    struct ComputeFunctorArgumentCountHelper<Functor, List<First, ArgList...>, false>
+        -:  608:        : ComputeFunctorArgumentCount<Functor,
+        -:  609:            typename List_Left<List<First, ArgList...>, sizeof...(ArgList)>::Value> {};
+        -:  610:
+        -:  611:    template <typename Functor, typename... ArgList> struct ComputeFunctorArgumentCount<Functor, List<ArgList...>>
+        -:  612:    {
+        -:  613:        template <typename D> static D dummy();
+        -:  614:        template <typename F> static auto test(F f) -> decltype(((f.operator()((dummy<ArgList>())...)), int()));
+        -:  615:        static char test(...);
+        -:  616:        enum {
+        -:  617:            Ok = sizeof(test(dummy<Functor>())) == sizeof(int),
+        -:  618:            Value = Ok ? int(sizeof...(ArgList)) : int(ComputeFunctorArgumentCountHelper<Functor, List<ArgList...>, Ok>::Value)
+        -:  619:        };
+        -:  620:    };
+        -:  621:
+        -:  622:    /* get the return type of a functor, given the signal argument list  */
+        -:  623:    template <typename Functor, typename ArgList> struct FunctorReturnType;
+        -:  624:    template <typename Functor, typename ... ArgList> struct FunctorReturnType<Functor, List<ArgList...>> {
+        -:  625:        template <typename D> static D dummy();
+        -:  626:        typedef decltype(dummy<Functor>().operator()((dummy<ArgList>())...)) Value;
+        -:  627:    };
+        -:  628:#endif
+        -:  629:
+        -:  630:}
+        -:  631:
+        -:  632:QT_END_NAMESPACE
+        -:  633:
+        -:  634:#endif

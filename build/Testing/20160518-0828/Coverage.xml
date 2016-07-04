@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Site BuildName="Linux-c++"
+	BuildStamp="20160518-0828-Experimental"
+	Name="pako-r50"
+	Generator="ctest-2.8.12.2"
+	CompilerName="/usr/bin/c++"
+	OSName="Linux"
+	Hostname="pako-r50"
+	OSRelease="4.2.0-35-generic"
+	OSVersion="#40~14.04.1-Ubuntu SMP Fri Mar 18 16:37:35 UTC 2016"
+	OSPlatform="x86_64"
+	Is64Bits="1"
+	VendorString="GenuineIntel"
+	VendorID="Intel Corporation"
+	FamilyID="6"
+	ModelID="69"
+	ProcessorCacheSize="3072"
+	NumberOfLogicalCPU="4"
+	NumberOfPhysicalCPU="2"
+	TotalVirtualMemory="0"
+	TotalPhysicalMemory="15963"
+	LogicalProcessorsPerPhysical="2"
+	ProcessorClockFrequency="2418.28"
+>
+<Coverage>
+	<StartDateTime>May 18 10:28 CEST</StartDateTime>
+	<StartTime>1463560135</StartTime>
+	<File Name="moc_mediaplayer.cpp" FullPath="./moc_mediaplayer.cpp" Covered="true">
+		<LOCTested>44</LOCTested>
+		<LOCUnTested>67</LOCUnTested>
+		<PercentCoverage>39.64</PercentCoverage>
+		<CoverageMetric>0.45</CoverageMetric>
+	</File>
+	<File Name="qrc_qml.cpp" FullPath="./qrc_qml.cpp" Covered="true">
+		<LOCTested>10</LOCTested>
+		<LOCUnTested>0</LOCUnTested>
+		<PercentCoverage>100.00</PercentCoverage>
+		<CoverageMetric>1.00</CoverageMetric>
+	</File>
+	<File Name="main.cpp" FullPath="./main.cpp" Covered="true">
+		<LOCTested>8</LOCTested>
+		<LOCUnTested>0</LOCUnTested>
+		<PercentCoverage>100.00</PercentCoverage>
+		<CoverageMetric>1.00</CoverageMetric>
+	</File>
+	<File Name="mediaplayer.cpp" FullPath="./src/mediaplayer.cpp" Covered="true">
+		<LOCTested>49</LOCTested>
+		<LOCUnTested>36</LOCUnTested>
+		<PercentCoverage>57.65</PercentCoverage>
+		<CoverageMetric>0.62</CoverageMetric>
+	</File>
+	<LOCTested>111</LOCTested>
+	<LOCUntested>103</LOCUntested>
+	<LOC>214</LOC>
+	<PercentCoverage>51.87</PercentCoverage>
+	<EndDateTime>May 18 10:28 CEST</EndDateTime>
+	<EndTime>1463560135</EndTime>
+<ElapsedMinutes>0.00</ElapsedMinutes></Coverage>
+</Site>

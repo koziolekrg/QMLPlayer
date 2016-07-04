@@ -1,0 +1,23 @@
+        -:    0:Source:/home/pako/Desktop/GitLab/library/media_player_qml_cmake/main.cpp
+        -:    0:Graph:/home/pako/Desktop/GitLab/library/media_player_qml_cmake/build/CMakeFiles/music_player.dir/main.cpp.gcno
+        -:    0:Data:/home/pako/Desktop/GitLab/library/media_player_qml_cmake/build/CMakeFiles/music_player.dir/main.cpp.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:#include <QGuiApplication>
+        -:    2:#include <QQmlContext>
+        -:    3:#include <QQmlApplicationEngine>
+        -:    4:#include <QQuickView>
+        -:    5:#include <QVector>
+        -:    6:#include "mediaplayer.h"
+        -:    7:
+        1:    8:int main(int argc, char *argv[])
+        -:    9:{
+        1:   10:    QGuiApplication app(argc, argv);
+        2:   11:    MediaPlayer player;
+        -:   12:
+        2:   13:    QQmlApplicationEngine engine;
+        1:   14:    engine.rootContext()->setContextProperty("player", &player);
+        -:   15:
+        1:   16:    engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
+        2:   17:    return app.exec();
+        3:   18:}

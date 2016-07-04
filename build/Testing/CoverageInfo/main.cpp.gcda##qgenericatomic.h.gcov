@@ -1,0 +1,384 @@
+        -:    0:Source:/home/pako/Qt5.6.0/5.6/gcc_64/include/QtCore/qgenericatomic.h
+        -:    0:Graph:/home/pako/Desktop/GitLab/library/media_player_qml_cmake/build/CMakeFiles/music_player.dir/main.cpp.gcno
+        -:    0:Data:/home/pako/Desktop/GitLab/library/media_player_qml_cmake/build/CMakeFiles/music_player.dir/main.cpp.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:/****************************************************************************
+        -:    2:**
+        -:    3:** Copyright (C) 2011 Thiago Macieira <thiago@kde.org>
+        -:    4:** Contact: http://www.qt.io/licensing/
+        -:    5:**
+        -:    6:** This file is part of the QtCore module of the Qt Toolkit.
+        -:    7:**
+        -:    8:** $QT_BEGIN_LICENSE:LGPL21$
+        -:    9:** Commercial License Usage
+        -:   10:** Licensees holding valid commercial Qt licenses may use this file in
+        -:   11:** accordance with the commercial license agreement provided with the
+        -:   12:** Software or, alternatively, in accordance with the terms contained in
+        -:   13:** a written agreement between you and The Qt Company. For licensing terms
+        -:   14:** and conditions see http://www.qt.io/terms-conditions. For further
+        -:   15:** information use the contact form at http://www.qt.io/contact-us.
+        -:   16:**
+        -:   17:** GNU Lesser General Public License Usage
+        -:   18:** Alternatively, this file may be used under the terms of the GNU Lesser
+        -:   19:** General Public License version 2.1 or version 3 as published by the Free
+        -:   20:** Software Foundation and appearing in the file LICENSE.LGPLv21 and
+        -:   21:** LICENSE.LGPLv3 included in the packaging of this file. Please review the
+        -:   22:** following information to ensure the GNU Lesser General Public License
+        -:   23:** requirements will be met: https://www.gnu.org/licenses/lgpl.html and
+        -:   24:** http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
+        -:   25:**
+        -:   26:** As a special exception, The Qt Company gives you certain additional
+        -:   27:** rights. These rights are described in The Qt Company LGPL Exception
+        -:   28:** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
+        -:   29:**
+        -:   30:** $QT_END_LICENSE$
+        -:   31:**
+        -:   32:****************************************************************************/
+        -:   33:
+        -:   34:#ifndef QGENERICATOMIC_H
+        -:   35:#define QGENERICATOMIC_H
+        -:   36:
+        -:   37:#include <QtCore/qglobal.h>
+        -:   38:#include <QtCore/qtypeinfo.h>
+        -:   39:
+        -:   40:QT_BEGIN_NAMESPACE
+        -:   41:
+        -:   42:#if 0
+        -:   43:// silence syncqt warnings
+        -:   44:QT_END_NAMESPACE
+        -:   45:#pragma qt_sync_skip_header_check
+        -:   46:#pragma qt_sync_stop_processing
+        -:   47:#endif
+        -:   48:
+        -:   49:template<int> struct QAtomicOpsSupport { enum { IsSupported = 0 }; };
+        -:   50:template<> struct QAtomicOpsSupport<4> { enum { IsSupported = 1 }; };
+        -:   51:
+        -:   52:template <typename T> struct QAtomicAdditiveType
+        -:   53:{
+        -:   54:    typedef T AdditiveT;
+        -:   55:    static const int AddScale = 1;
+        -:   56:};
+        -:   57:template <typename T> struct QAtomicAdditiveType<T *>
+        -:   58:{
+        -:   59:    typedef qptrdiff AdditiveT;
+        -:   60:    static const int AddScale = sizeof(T);
+        -:   61:};
+        -:   62:
+        -:   63:// not really atomic...
+        -:   64:template <typename BaseClass> struct QGenericAtomicOps
+        -:   65:{
+        -:   66:    template <typename T> struct AtomicType { typedef T Type; typedef T *PointerType; };
+        -:   67:
+        -:   68:    template <typename T> static void acquireMemoryFence(const T &_q_value) Q_DECL_NOTHROW
+        -:   69:    {
+        -:   70:        BaseClass::orderedMemoryFence(_q_value);
+        -:   71:    }
+        -:   72:    template <typename T> static void releaseMemoryFence(const T &_q_value) Q_DECL_NOTHROW
+        -:   73:    {
+        -:   74:        BaseClass::orderedMemoryFence(_q_value);
+        -:   75:    }
+        -:   76:    template <typename T> static void orderedMemoryFence(const T &) Q_DECL_NOTHROW
+        -:   77:    {
+        -:   78:    }
+        -:   79:
+        -:   80:    template <typename T> static Q_ALWAYS_INLINE
+        -:   81:    T load(const T &_q_value) Q_DECL_NOTHROW
+        -:   82:    {
+        5:   83:        return _q_value;
+        -:   84:    }
+        -:   85:
+        -:   86:    template <typename T, typename X> static Q_ALWAYS_INLINE
+        -:   87:    void store(T &_q_value, X newValue) Q_DECL_NOTHROW
+        -:   88:    {
+        -:   89:        _q_value = newValue;
+        -:   90:    }
+        -:   91:
+        -:   92:    template <typename T> static Q_ALWAYS_INLINE
+        -:   93:    T loadAcquire(const T &_q_value) Q_DECL_NOTHROW
+        -:   94:    {
+        -:   95:        T tmp = *static_cast<const volatile T *>(&_q_value);
+        -:   96:        BaseClass::acquireMemoryFence(_q_value);
+        -:   97:        return tmp;
+        -:   98:    }
+        -:   99:
+        -:  100:    template <typename T, typename X> static Q_ALWAYS_INLINE
+        -:  101:    void storeRelease(T &_q_value, X newValue) Q_DECL_NOTHROW
+        -:  102:    {
+        -:  103:        BaseClass::releaseMemoryFence(_q_value);
+        -:  104:        *static_cast<volatile T *>(&_q_value) = newValue;
+        -:  105:    }
+        -:  106:
+        -:  107:    static inline Q_DECL_CONSTEXPR bool isReferenceCountingNative() Q_DECL_NOTHROW
+        -:  108:    { return BaseClass::isFetchAndAddNative(); }
+        -:  109:    static inline Q_DECL_CONSTEXPR bool isReferenceCountingWaitFree() Q_DECL_NOTHROW
+        -:  110:    { return BaseClass::isFetchAndAddWaitFree(); }
+        -:  111:    template <typename T> static Q_ALWAYS_INLINE
+        -:  112:    bool ref(T &_q_value) Q_DECL_NOTHROW
+        -:  113:    {
+        -:  114:        return BaseClass::fetchAndAddRelaxed(_q_value, 1) != T(-1);
+        -:  115:    }
+        -:  116:
+        -:  117:    template <typename T> static Q_ALWAYS_INLINE
+        -:  118:    bool deref(T &_q_value) Q_DECL_NOTHROW
+        -:  119:    {
+        -:  120:         return BaseClass::fetchAndAddRelaxed(_q_value, -1) != 1;
+        -:  121:    }
+        -:  122:
+        -:  123:#if 0
+        -:  124:    // These functions have no default implementation
+        -:  125:    // Archictectures must implement them
+        -:  126:    static inline Q_DECL_CONSTEXPR bool isTestAndSetNative() Q_DECL_NOTHROW;
+        -:  127:    static inline Q_DECL_CONSTEXPR bool isTestAndSetWaitFree() Q_DECL_NOTHROW;
+        -:  128:    template <typename T, typename X> static inline
+        -:  129:    bool testAndSetRelaxed(T &_q_value, X expectedValue, X newValue) Q_DECL_NOTHROW;
+        -:  130:    template <typename T, typename X> static inline
+        -:  131:    bool testAndSetRelaxed(T &_q_value, X expectedValue, X newValue, X *currentValue) Q_DECL_NOTHROW;
+        -:  132:#endif
+        -:  133:
+        -:  134:    template <typename T, typename X> static Q_ALWAYS_INLINE
+        -:  135:    bool testAndSetAcquire(T &_q_value, X expectedValue, X newValue) Q_DECL_NOTHROW
+        -:  136:    {
+        -:  137:        bool tmp = BaseClass::testAndSetRelaxed(_q_value, expectedValue, newValue);
+        -:  138:        BaseClass::acquireMemoryFence(_q_value);
+        -:  139:        return tmp;
+        -:  140:    }
+        -:  141:
+        -:  142:    template <typename T, typename X> static Q_ALWAYS_INLINE
+        -:  143:    bool testAndSetRelease(T &_q_value, X expectedValue, X newValue) Q_DECL_NOTHROW
+        -:  144:    {
+        -:  145:        BaseClass::releaseMemoryFence(_q_value);
+        -:  146:        return BaseClass::testAndSetRelaxed(_q_value, expectedValue, newValue);
+        -:  147:    }
+        -:  148:
+        -:  149:    template <typename T, typename X> static Q_ALWAYS_INLINE
+        -:  150:    bool testAndSetOrdered(T &_q_value, X expectedValue, X newValue) Q_DECL_NOTHROW
+        -:  151:    {
+        -:  152:        BaseClass::orderedMemoryFence(_q_value);
+        -:  153:        return BaseClass::testAndSetRelaxed(_q_value, expectedValue, newValue);
+        -:  154:    }
+        -:  155:
+        -:  156:    template <typename T, typename X> static Q_ALWAYS_INLINE
+        -:  157:    bool testAndSetAcquire(T &_q_value, X expectedValue, X newValue, X *currentValue) Q_DECL_NOTHROW
+        -:  158:    {
+        -:  159:        bool tmp = BaseClass::testAndSetRelaxed(_q_value, expectedValue, newValue, currentValue);
+        -:  160:        BaseClass::acquireMemoryFence(_q_value);
+        -:  161:        return tmp;
+        -:  162:    }
+        -:  163:
+        -:  164:    template <typename T, typename X> static Q_ALWAYS_INLINE
+        -:  165:    bool testAndSetRelease(T &_q_value, X expectedValue, X newValue, X *currentValue) Q_DECL_NOTHROW
+        -:  166:    {
+        -:  167:        BaseClass::releaseMemoryFence(_q_value);
+        -:  168:        return BaseClass::testAndSetRelaxed(_q_value, expectedValue, newValue, currentValue);
+        -:  169:    }
+        -:  170:
+        -:  171:    template <typename T, typename X> static Q_ALWAYS_INLINE
+        -:  172:    bool testAndSetOrdered(T &_q_value, X expectedValue, X newValue, X *currentValue) Q_DECL_NOTHROW
+        -:  173:    {
+        -:  174:        BaseClass::orderedMemoryFence(_q_value);
+        -:  175:        return BaseClass::testAndSetRelaxed(_q_value, expectedValue, newValue, currentValue);
+        -:  176:    }
+        -:  177:
+        -:  178:    static inline Q_DECL_CONSTEXPR bool isFetchAndStoreNative() Q_DECL_NOTHROW { return false; }
+        -:  179:    static inline Q_DECL_CONSTEXPR bool isFetchAndStoreWaitFree() Q_DECL_NOTHROW { return false; }
+        -:  180:
+        -:  181:    template <typename T, typename X> static Q_ALWAYS_INLINE
+        -:  182:    T fetchAndStoreRelaxed(T &_q_value, X newValue) Q_DECL_NOTHROW
+        -:  183:    {
+        -:  184:        // implement fetchAndStore on top of testAndSet
+        -:  185:        Q_FOREVER {
+        -:  186:            T tmp = load(_q_value);
+        -:  187:            if (BaseClass::testAndSetRelaxed(_q_value, tmp, newValue))
+        -:  188:                return tmp;
+        -:  189:        }
+        -:  190:    }
+        -:  191:
+        -:  192:    template <typename T, typename X> static Q_ALWAYS_INLINE
+        -:  193:    T fetchAndStoreAcquire(T &_q_value, X newValue) Q_DECL_NOTHROW
+        -:  194:    {
+        -:  195:        T tmp = BaseClass::fetchAndStoreRelaxed(_q_value, newValue);
+        -:  196:        BaseClass::acquireMemoryFence(_q_value);
+        -:  197:        return tmp;
+        -:  198:    }
+        -:  199:
+        -:  200:    template <typename T, typename X> static Q_ALWAYS_INLINE
+        -:  201:    T fetchAndStoreRelease(T &_q_value, X newValue) Q_DECL_NOTHROW
+        -:  202:    {
+        -:  203:        BaseClass::releaseMemoryFence(_q_value);
+        -:  204:        return BaseClass::fetchAndStoreRelaxed(_q_value, newValue);
+        -:  205:    }
+        -:  206:
+        -:  207:    template <typename T, typename X> static Q_ALWAYS_INLINE
+        -:  208:    T fetchAndStoreOrdered(T &_q_value, X newValue) Q_DECL_NOTHROW
+        -:  209:    {
+        -:  210:        BaseClass::orderedMemoryFence(_q_value);
+        -:  211:        return BaseClass::fetchAndStoreRelaxed(_q_value, newValue);
+        -:  212:    }
+        -:  213:
+        -:  214:    static inline Q_DECL_CONSTEXPR bool isFetchAndAddNative() Q_DECL_NOTHROW { return false; }
+        -:  215:    static inline Q_DECL_CONSTEXPR bool isFetchAndAddWaitFree() Q_DECL_NOTHROW { return false; }
+        -:  216:    template <typename T> static Q_ALWAYS_INLINE
+        -:  217:    T fetchAndAddRelaxed(T &_q_value, typename QAtomicAdditiveType<T>::AdditiveT valueToAdd) Q_DECL_NOTHROW
+        -:  218:    {
+        -:  219:        // implement fetchAndAdd on top of testAndSet
+        -:  220:        Q_FOREVER {
+        -:  221:            T tmp = BaseClass::load(_q_value);
+        -:  222:            if (BaseClass::testAndSetRelaxed(_q_value, tmp, T(tmp + valueToAdd)))
+        -:  223:                return tmp;
+        -:  224:        }
+        -:  225:    }
+        -:  226:
+        -:  227:    template <typename T> static Q_ALWAYS_INLINE
+        -:  228:    T fetchAndAddAcquire(T &_q_value, typename QAtomicAdditiveType<T>::AdditiveT valueToAdd) Q_DECL_NOTHROW
+        -:  229:    {
+        -:  230:        T tmp = BaseClass::fetchAndAddRelaxed(_q_value, valueToAdd);
+        -:  231:        BaseClass::acquireMemoryFence(_q_value);
+        -:  232:        return tmp;
+        -:  233:    }
+        -:  234:
+        -:  235:    template <typename T> static Q_ALWAYS_INLINE
+        -:  236:    T fetchAndAddRelease(T &_q_value, typename QAtomicAdditiveType<T>::AdditiveT valueToAdd) Q_DECL_NOTHROW
+        -:  237:    {
+        -:  238:        BaseClass::releaseMemoryFence(_q_value);
+        -:  239:        return BaseClass::fetchAndAddRelaxed(_q_value, valueToAdd);
+        -:  240:    }
+        -:  241:
+        -:  242:    template <typename T> static Q_ALWAYS_INLINE
+        -:  243:    T fetchAndAddOrdered(T &_q_value, typename QAtomicAdditiveType<T>::AdditiveT valueToAdd) Q_DECL_NOTHROW
+        -:  244:    {
+        -:  245:        BaseClass::orderedMemoryFence(_q_value);
+        -:  246:        return BaseClass::fetchAndAddRelaxed(_q_value, valueToAdd);
+        -:  247:    }
+        -:  248:
+        -:  249:    template <typename T> static Q_ALWAYS_INLINE
+        -:  250:    T fetchAndSubRelaxed(T &_q_value, typename QAtomicAdditiveType<T>::AdditiveT operand) Q_DECL_NOTHROW
+        -:  251:    {
+        -:  252:        // implement fetchAndSub on top of fetchAndAdd
+        -:  253:        return fetchAndAddRelaxed(_q_value, -operand);
+        -:  254:    }
+        -:  255:
+        -:  256:    template <typename T> static Q_ALWAYS_INLINE
+        -:  257:    T fetchAndSubAcquire(T &_q_value, typename QAtomicAdditiveType<T>::AdditiveT operand) Q_DECL_NOTHROW
+        -:  258:    {
+        -:  259:        T tmp = BaseClass::fetchAndSubRelaxed(_q_value, operand);
+        -:  260:        BaseClass::acquireMemoryFence(_q_value);
+        -:  261:        return tmp;
+        -:  262:    }
+        -:  263:
+        -:  264:    template <typename T> static Q_ALWAYS_INLINE
+        -:  265:    T fetchAndSubRelease(T &_q_value, typename QAtomicAdditiveType<T>::AdditiveT operand) Q_DECL_NOTHROW
+        -:  266:    {
+        -:  267:        BaseClass::releaseMemoryFence(_q_value);
+        -:  268:        return BaseClass::fetchAndSubRelaxed(_q_value, operand);
+        -:  269:    }
+        -:  270:
+        -:  271:    template <typename T> static Q_ALWAYS_INLINE
+        -:  272:    T fetchAndSubOrdered(T &_q_value, typename QAtomicAdditiveType<T>::AdditiveT operand) Q_DECL_NOTHROW
+        -:  273:    {
+        -:  274:        BaseClass::orderedMemoryFence(_q_value);
+        -:  275:        return BaseClass::fetchAndSubRelaxed(_q_value, operand);
+        -:  276:    }
+        -:  277:
+        -:  278:    template <typename T> static Q_ALWAYS_INLINE
+        -:  279:    T fetchAndAndRelaxed(T &_q_value, typename QtPrivate::QEnableIf<QTypeInfo<T>::isIntegral, T>::Type operand) Q_DECL_NOTHROW
+        -:  280:    {
+        -:  281:        // implement fetchAndAnd on top of testAndSet
+        -:  282:        T tmp = BaseClass::load(_q_value);
+        -:  283:        Q_FOREVER {
+        -:  284:            if (BaseClass::testAndSetRelaxed(_q_value, tmp, T(tmp & operand), &tmp))
+        -:  285:                return tmp;
+        -:  286:        }
+        -:  287:    }
+        -:  288:
+        -:  289:    template <typename T> static Q_ALWAYS_INLINE
+        -:  290:    T fetchAndAndAcquire(T &_q_value, typename QtPrivate::QEnableIf<QTypeInfo<T>::isIntegral, T>::Type operand) Q_DECL_NOTHROW
+        -:  291:    {
+        -:  292:        T tmp = BaseClass::fetchAndAndRelaxed(_q_value, operand);
+        -:  293:        BaseClass::acquireMemoryFence(_q_value);
+        -:  294:        return tmp;
+        -:  295:    }
+        -:  296:
+        -:  297:    template <typename T> static Q_ALWAYS_INLINE
+        -:  298:    T fetchAndAndRelease(T &_q_value, typename QtPrivate::QEnableIf<QTypeInfo<T>::isIntegral, T>::Type operand) Q_DECL_NOTHROW
+        -:  299:    {
+        -:  300:        BaseClass::releaseMemoryFence(_q_value);
+        -:  301:        return BaseClass::fetchAndAndRelaxed(_q_value, operand);
+        -:  302:    }
+        -:  303:
+        -:  304:    template <typename T> static Q_ALWAYS_INLINE
+        -:  305:    T fetchAndAndOrdered(T &_q_value, typename QtPrivate::QEnableIf<QTypeInfo<T>::isIntegral, T>::Type operand) Q_DECL_NOTHROW
+        -:  306:    {
+        -:  307:        BaseClass::orderedMemoryFence(_q_value);
+        -:  308:        return BaseClass::fetchAndAndRelaxed(_q_value, operand);
+        -:  309:    }
+        -:  310:
+        -:  311:    template <typename T> static Q_ALWAYS_INLINE
+        -:  312:    T fetchAndOrRelaxed(T &_q_value, typename QtPrivate::QEnableIf<QTypeInfo<T>::isIntegral, T>::Type operand) Q_DECL_NOTHROW
+        -:  313:    {
+        -:  314:        // implement fetchAndOr on top of testAndSet
+        -:  315:        T tmp = BaseClass::load(_q_value);
+        -:  316:        Q_FOREVER {
+        -:  317:            if (BaseClass::testAndSetRelaxed(_q_value, tmp, T(tmp | operand), &tmp))
+        -:  318:                return tmp;
+        -:  319:        }
+        -:  320:    }
+        -:  321:
+        -:  322:    template <typename T> static Q_ALWAYS_INLINE
+        -:  323:    T fetchAndOrAcquire(T &_q_value, typename QtPrivate::QEnableIf<QTypeInfo<T>::isIntegral, T>::Type operand) Q_DECL_NOTHROW
+        -:  324:    {
+        -:  325:        T tmp = BaseClass::fetchAndOrRelaxed(_q_value, operand);
+        -:  326:        BaseClass::acquireMemoryFence(_q_value);
+        -:  327:        return tmp;
+        -:  328:    }
+        -:  329:
+        -:  330:    template <typename T> static Q_ALWAYS_INLINE
+        -:  331:    T fetchAndOrRelease(T &_q_value, typename QtPrivate::QEnableIf<QTypeInfo<T>::isIntegral, T>::Type operand) Q_DECL_NOTHROW
+        -:  332:    {
+        -:  333:        BaseClass::releaseMemoryFence(_q_value);
+        -:  334:        return BaseClass::fetchAndOrRelaxed(_q_value, operand);
+        -:  335:    }
+        -:  336:
+        -:  337:    template <typename T> static Q_ALWAYS_INLINE
+        -:  338:    T fetchAndOrOrdered(T &_q_value, typename QtPrivate::QEnableIf<QTypeInfo<T>::isIntegral, T>::Type operand) Q_DECL_NOTHROW
+        -:  339:    {
+        -:  340:        BaseClass::orderedMemoryFence(_q_value);
+        -:  341:        return BaseClass::fetchAndOrRelaxed(_q_value, operand);
+        -:  342:    }
+        -:  343:
+        -:  344:    template <typename T> static Q_ALWAYS_INLINE
+        -:  345:    T fetchAndXorRelaxed(T &_q_value, typename QtPrivate::QEnableIf<QTypeInfo<T>::isIntegral, T>::Type operand) Q_DECL_NOTHROW
+        -:  346:    {
+        -:  347:        // implement fetchAndXor on top of testAndSet
+        -:  348:        T tmp = BaseClass::load(_q_value);
+        -:  349:        Q_FOREVER {
+        -:  350:            if (BaseClass::testAndSetRelaxed(_q_value, tmp, T(tmp ^ operand), &tmp))
+        -:  351:                return tmp;
+        -:  352:        }
+        -:  353:    }
+        -:  354:
+        -:  355:    template <typename T> static Q_ALWAYS_INLINE
+        -:  356:    T fetchAndXorAcquire(T &_q_value, typename QtPrivate::QEnableIf<QTypeInfo<T>::isIntegral, T>::Type operand) Q_DECL_NOTHROW
+        -:  357:    {
+        -:  358:        T tmp = BaseClass::fetchAndXorRelaxed(_q_value, operand);
+        -:  359:        BaseClass::acquireMemoryFence(_q_value);
+        -:  360:        return tmp;
+        -:  361:    }
+        -:  362:
+        -:  363:    template <typename T> static Q_ALWAYS_INLINE
+        -:  364:    T fetchAndXorRelease(T &_q_value, typename QtPrivate::QEnableIf<QTypeInfo<T>::isIntegral, T>::Type operand) Q_DECL_NOTHROW
+        -:  365:    {
+        -:  366:        BaseClass::releaseMemoryFence(_q_value);
+        -:  367:        return BaseClass::fetchAndXorRelaxed(_q_value, operand);
+        -:  368:    }
+        -:  369:
+        -:  370:    template <typename T> static Q_ALWAYS_INLINE
+        -:  371:    T fetchAndXorOrdered(T &_q_value, typename QtPrivate::QEnableIf<QTypeInfo<T>::isIntegral, T>::Type operand) Q_DECL_NOTHROW
+        -:  372:    {
+        -:  373:        BaseClass::orderedMemoryFence(_q_value);
+        -:  374:        return BaseClass::fetchAndXorRelaxed(_q_value, operand);
+        -:  375:    }
+        -:  376:};
+        -:  377:
+        -:  378:QT_END_NAMESPACE
+        -:  379:#endif // QGENERICATOMIC_H

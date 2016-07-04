@@ -1,0 +1,369 @@
+        -:    0:Source:/home/pako/Qt5.6.0/5.6/gcc_64/include/QtCore/qarraydata.h
+        -:    0:Graph:/home/pako/Desktop/GitLab/library/media_player_qml_cmake/build/CMakeFiles/music_player.dir/music_player_automoc.cpp.gcno
+        -:    0:Data:/home/pako/Desktop/GitLab/library/media_player_qml_cmake/build/CMakeFiles/music_player.dir/music_player_automoc.cpp.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:/****************************************************************************
+        -:    2:**
+        -:    3:** Copyright (C) 2015 The Qt Company Ltd.
+        -:    4:** Contact: http://www.qt.io/licensing/
+        -:    5:**
+        -:    6:** This file is part of the QtCore module of the Qt Toolkit.
+        -:    7:**
+        -:    8:** $QT_BEGIN_LICENSE:LGPL21$
+        -:    9:** Commercial License Usage
+        -:   10:** Licensees holding valid commercial Qt licenses may use this file in
+        -:   11:** accordance with the commercial license agreement provided with the
+        -:   12:** Software or, alternatively, in accordance with the terms contained in
+        -:   13:** a written agreement between you and The Qt Company. For licensing terms
+        -:   14:** and conditions see http://www.qt.io/terms-conditions. For further
+        -:   15:** information use the contact form at http://www.qt.io/contact-us.
+        -:   16:**
+        -:   17:** GNU Lesser General Public License Usage
+        -:   18:** Alternatively, this file may be used under the terms of the GNU Lesser
+        -:   19:** General Public License version 2.1 or version 3 as published by the Free
+        -:   20:** Software Foundation and appearing in the file LICENSE.LGPLv21 and
+        -:   21:** LICENSE.LGPLv3 included in the packaging of this file. Please review the
+        -:   22:** following information to ensure the GNU Lesser General Public License
+        -:   23:** requirements will be met: https://www.gnu.org/licenses/lgpl.html and
+        -:   24:** http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
+        -:   25:**
+        -:   26:** As a special exception, The Qt Company gives you certain additional
+        -:   27:** rights. These rights are described in The Qt Company LGPL Exception
+        -:   28:** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
+        -:   29:**
+        -:   30:** $QT_END_LICENSE$
+        -:   31:**
+        -:   32:****************************************************************************/
+        -:   33:
+        -:   34:#ifndef QARRAYDATA_H
+        -:   35:#define QARRAYDATA_H
+        -:   36:
+        -:   37:#include <QtCore/qrefcount.h>
+        -:   38:#include <string.h>
+        -:   39:
+        -:   40:QT_BEGIN_NAMESPACE
+        -:   41:
+        -:   42:struct Q_CORE_EXPORT QArrayData
+        -:   43:{
+        -:   44:    QtPrivate::RefCount ref;
+        -:   45:    int size;
+        -:   46:    uint alloc : 31;
+        -:   47:    uint capacityReserved : 1;
+        -:   48:
+        -:   49:    qptrdiff offset; // in bytes from beginning of header
+        -:   50:
+        -:   51:    void *data()
+        -:   52:    {
+        -:   53:        Q_ASSERT(size == 0
+        -:   54:                || offset < 0 || size_t(offset) >= sizeof(QArrayData));
+        -:   55:        return reinterpret_cast<char *>(this) + offset;
+        -:   56:    }
+        -:   57:
+        -:   58:    const void *data() const
+        -:   59:    {
+        -:   60:        Q_ASSERT(size == 0
+        -:   61:                || offset < 0 || size_t(offset) >= sizeof(QArrayData));
+        -:   62:        return reinterpret_cast<const char *>(this) + offset;
+        -:   63:    }
+        -:   64:
+        -:   65:    // This refers to array data mutability, not "header data" represented by
+        -:   66:    // data members in QArrayData. Shared data (array and header) must still
+        -:   67:    // follow COW principles.
+        -:   68:    bool isMutable() const
+        -:   69:    {
+        -:   70:        return alloc != 0;
+        -:   71:    }
+        -:   72:
+        -:   73:    enum AllocationOption {
+        -:   74:        CapacityReserved    = 0x1,
+        -:   75:#if QT_SUPPORTS(UNSHARABLE_CONTAINERS)
+        -:   76:        Unsharable          = 0x2,
+        -:   77:#endif
+        -:   78:        RawData             = 0x4,
+        -:   79:        Grow                = 0x8,
+        -:   80:
+        -:   81:        Default = 0
+        -:   82:    };
+        -:   83:
+        -:   84:    Q_DECLARE_FLAGS(AllocationOptions, AllocationOption)
+        -:   85:
+        -:   86:    size_t detachCapacity(size_t newSize) const
+        -:   87:    {
+        -:   88:        if (capacityReserved && newSize < alloc)
+        -:   89:            return alloc;
+        -:   90:        return newSize;
+        -:   91:    }
+        -:   92:
+        -:   93:    AllocationOptions detachFlags() const
+        -:   94:    {
+        -:   95:        AllocationOptions result;
+        -:   96:        if (capacityReserved)
+        -:   97:            result |= CapacityReserved;
+        -:   98:        return result;
+        -:   99:    }
+        -:  100:
+        -:  101:    AllocationOptions cloneFlags() const
+        -:  102:    {
+        -:  103:        AllocationOptions result;
+        -:  104:        if (capacityReserved)
+        -:  105:            result |= CapacityReserved;
+        -:  106:        return result;
+        -:  107:    }
+        -:  108:
+        -:  109:    static QArrayData *allocate(size_t objectSize, size_t alignment,
+        -:  110:            size_t capacity, AllocationOptions options = Default)
+        -:  111:        Q_DECL_NOTHROW Q_REQUIRED_RESULT;
+        -:  112:    static void deallocate(QArrayData *data, size_t objectSize,
+        -:  113:            size_t alignment) Q_DECL_NOTHROW;
+        -:  114:
+        -:  115:    static const QArrayData shared_null[2];
+        -:  116:    static QArrayData *sharedNull() Q_DECL_NOTHROW { return const_cast<QArrayData*>(shared_null); }
+        -:  117:};
+        -:  118:
+        -:  119:Q_DECLARE_OPERATORS_FOR_FLAGS(QArrayData::AllocationOptions)
+        -:  120:
+        -:  121:template <class T>
+        -:  122:struct QTypedArrayData
+        -:  123:    : QArrayData
+        -:  124:{
+        -:  125:#ifdef QT_STRICT_ITERATORS
+        -:  126:    class iterator {
+        -:  127:    public:
+        -:  128:        T *i;
+        -:  129:        typedef std::random_access_iterator_tag  iterator_category;
+        -:  130:        typedef int difference_type;
+        -:  131:        typedef T value_type;
+        -:  132:        typedef T *pointer;
+        -:  133:        typedef T &reference;
+        -:  134:
+        -:  135:        inline iterator() : i(Q_NULLPTR) {}
+        -:  136:        inline iterator(T *n) : i(n) {}
+        -:  137:        inline iterator(const iterator &o): i(o.i){} // #### Qt 6: remove, the implicit version is fine
+        -:  138:        inline T &operator*() const { return *i; }
+        -:  139:        inline T *operator->() const { return i; }
+        -:  140:        inline T &operator[](int j) const { return *(i + j); }
+        -:  141:        inline bool operator==(const iterator &o) const { return i == o.i; }
+        -:  142:        inline bool operator!=(const iterator &o) const { return i != o.i; }
+        -:  143:        inline bool operator<(const iterator& other) const { return i < other.i; }
+        -:  144:        inline bool operator<=(const iterator& other) const { return i <= other.i; }
+        -:  145:        inline bool operator>(const iterator& other) const { return i > other.i; }
+        -:  146:        inline bool operator>=(const iterator& other) const { return i >= other.i; }
+        -:  147:        inline iterator &operator++() { ++i; return *this; }
+        -:  148:        inline iterator operator++(int) { T *n = i; ++i; return n; }
+        -:  149:        inline iterator &operator--() { i--; return *this; }
+        -:  150:        inline iterator operator--(int) { T *n = i; i--; return n; }
+        -:  151:        inline iterator &operator+=(int j) { i+=j; return *this; }
+        -:  152:        inline iterator &operator-=(int j) { i-=j; return *this; }
+        -:  153:        inline iterator operator+(int j) const { return iterator(i+j); }
+        -:  154:        inline iterator operator-(int j) const { return iterator(i-j); }
+        -:  155:        inline int operator-(iterator j) const { return i - j.i; }
+        -:  156:        inline operator T*() const { return i; }
+        -:  157:    };
+        -:  158:    friend class iterator;
+        -:  159:
+        -:  160:    class const_iterator {
+        -:  161:    public:
+        -:  162:        const T *i;
+        -:  163:        typedef std::random_access_iterator_tag  iterator_category;
+        -:  164:        typedef int difference_type;
+        -:  165:        typedef T value_type;
+        -:  166:        typedef const T *pointer;
+        -:  167:        typedef const T &reference;
+        -:  168:
+        -:  169:        inline const_iterator() : i(Q_NULLPTR) {}
+        -:  170:        inline const_iterator(const T *n) : i(n) {}
+        -:  171:        inline const_iterator(const const_iterator &o): i(o.i) {} // #### Qt 6: remove, the default version is fine
+        -:  172:        inline explicit const_iterator(const iterator &o): i(o.i) {}
+        -:  173:        inline const T &operator*() const { return *i; }
+        -:  174:        inline const T *operator->() const { return i; }
+        -:  175:        inline const T &operator[](int j) const { return *(i + j); }
+        -:  176:        inline bool operator==(const const_iterator &o) const { return i == o.i; }
+        -:  177:        inline bool operator!=(const const_iterator &o) const { return i != o.i; }
+        -:  178:        inline bool operator<(const const_iterator& other) const { return i < other.i; }
+        -:  179:        inline bool operator<=(const const_iterator& other) const { return i <= other.i; }
+        -:  180:        inline bool operator>(const const_iterator& other) const { return i > other.i; }
+        -:  181:        inline bool operator>=(const const_iterator& other) const { return i >= other.i; }
+        -:  182:        inline const_iterator &operator++() { ++i; return *this; }
+        -:  183:        inline const_iterator operator++(int) { const T *n = i; ++i; return n; }
+        -:  184:        inline const_iterator &operator--() { i--; return *this; }
+        -:  185:        inline const_iterator operator--(int) { const T *n = i; i--; return n; }
+        -:  186:        inline const_iterator &operator+=(int j) { i+=j; return *this; }
+        -:  187:        inline const_iterator &operator-=(int j) { i-=j; return *this; }
+        -:  188:        inline const_iterator operator+(int j) const { return const_iterator(i+j); }
+        -:  189:        inline const_iterator operator-(int j) const { return const_iterator(i-j); }
+        -:  190:        inline int operator-(const_iterator j) const { return i - j.i; }
+        -:  191:        inline operator const T*() const { return i; }
+        -:  192:    };
+        -:  193:    friend class const_iterator;
+        -:  194:#else
+        -:  195:    typedef T* iterator;
+        -:  196:    typedef const T* const_iterator;
+        -:  197:#endif
+        -:  198:
+        -:  199:    T *data() { return static_cast<T *>(QArrayData::data()); }
+        -:  200:    const T *data() const { return static_cast<const T *>(QArrayData::data()); }
+        -:  201:
+        -:  202:    iterator begin(iterator = iterator()) { return data(); }
+        -:  203:    iterator end(iterator = iterator()) { return data() + size; }
+        -:  204:    const_iterator begin(const_iterator = const_iterator()) const { return data(); }
+        -:  205:    const_iterator end(const_iterator = const_iterator()) const { return data() + size; }
+        -:  206:    const_iterator constBegin(const_iterator = const_iterator()) const { return data(); }
+        -:  207:    const_iterator constEnd(const_iterator = const_iterator()) const { return data() + size; }
+        -:  208:
+        -:  209:    class AlignmentDummy { QArrayData header; T data; };
+        -:  210:
+        -:  211:    static QTypedArrayData *allocate(size_t capacity,
+        -:  212:            AllocationOptions options = Default) Q_REQUIRED_RESULT
+        -:  213:    {
+        -:  214:        Q_STATIC_ASSERT(sizeof(QTypedArrayData) == sizeof(QArrayData));
+        -:  215:        return static_cast<QTypedArrayData *>(QArrayData::allocate(sizeof(T),
+        -:  216:                    Q_ALIGNOF(AlignmentDummy), capacity, options));
+        -:  217:    }
+        -:  218:
+    #####:  219:    static void deallocate(QArrayData *data)
+        -:  220:    {
+        -:  221:        Q_STATIC_ASSERT(sizeof(QTypedArrayData) == sizeof(QArrayData));
+    #####:  222:        QArrayData::deallocate(data, sizeof(T), Q_ALIGNOF(AlignmentDummy));
+    #####:  223:    }
+        -:  224:
+        -:  225:    static QTypedArrayData *fromRawData(const T *data, size_t n,
+        -:  226:            AllocationOptions options = Default)
+        -:  227:    {
+        -:  228:        Q_STATIC_ASSERT(sizeof(QTypedArrayData) == sizeof(QArrayData));
+        -:  229:        QTypedArrayData *result = allocate(0, options | RawData);
+        -:  230:        if (result) {
+        -:  231:            Q_ASSERT(!result->ref.isShared()); // No shared empty, please!
+        -:  232:
+        -:  233:            result->offset = reinterpret_cast<const char *>(data)
+        -:  234:                - reinterpret_cast<const char *>(result);
+        -:  235:            result->size = int(n);
+        -:  236:        }
+        -:  237:        return result;
+        -:  238:    }
+        -:  239:
+        -:  240:    static QTypedArrayData *sharedNull() Q_DECL_NOTHROW
+        -:  241:    {
+        -:  242:        Q_STATIC_ASSERT(sizeof(QTypedArrayData) == sizeof(QArrayData));
+        -:  243:        return static_cast<QTypedArrayData *>(QArrayData::sharedNull());
+        -:  244:    }
+        -:  245:
+        -:  246:    static QTypedArrayData *sharedEmpty()
+        -:  247:    {
+        -:  248:        Q_STATIC_ASSERT(sizeof(QTypedArrayData) == sizeof(QArrayData));
+        -:  249:        return allocate(/* capacity */ 0);
+        -:  250:    }
+        -:  251:
+        -:  252:#if QT_SUPPORTS(UNSHARABLE_CONTAINERS)
+        -:  253:    static QTypedArrayData *unsharableEmpty()
+        -:  254:    {
+        -:  255:        Q_STATIC_ASSERT(sizeof(QTypedArrayData) == sizeof(QArrayData));
+        -:  256:        return allocate(/* capacity */ 0, Unsharable);
+        -:  257:    }
+        -:  258:#endif
+        -:  259:};
+        -:  260:
+        -:  261:template <class T, size_t N>
+        -:  262:struct QStaticArrayData
+        -:  263:{
+        -:  264:    QArrayData header;
+        -:  265:    T data[N];
+        -:  266:};
+        -:  267:
+        -:  268:// Support for returning QArrayDataPointer<T> from functions
+        -:  269:template <class T>
+        -:  270:struct QArrayDataPointerRef
+        -:  271:{
+        -:  272:    QTypedArrayData<T> *ptr;
+        -:  273:};
+        -:  274:
+        -:  275:#define Q_STATIC_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(size, offset) \
+        -:  276:    { Q_REFCOUNT_INITIALIZE_STATIC, size, 0, 0, offset } \
+        -:  277:    /**/
+        -:  278:
+        -:  279:#define Q_STATIC_ARRAY_DATA_HEADER_INITIALIZER(type, size) \
+        -:  280:    Q_STATIC_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(size,\
+        -:  281:        ((sizeof(QArrayData) + (Q_ALIGNOF(type) - 1)) & ~(Q_ALIGNOF(type) - 1) )) \
+        -:  282:    /**/
+        -:  283:
+        -:  284:////////////////////////////////////////////////////////////////////////////////
+        -:  285://  Q_ARRAY_LITERAL
+        -:  286:
+        -:  287:// The idea here is to place a (read-only) copy of header and array data in an
+        -:  288:// mmappable portion of the executable (typically, .rodata section). This is
+        -:  289:// accomplished by hiding a static const instance of QStaticArrayData, which is
+        -:  290:// POD.
+        -:  291:
+        -:  292:#if defined(Q_COMPILER_VARIADIC_MACROS)
+        -:  293:#if defined(Q_COMPILER_LAMBDA)
+        -:  294:// Hide array inside a lambda
+        -:  295:#define Q_ARRAY_LITERAL(Type, ...)                                              \
+        -:  296:    ([]() -> QArrayDataPointerRef<Type> {                                       \
+        -:  297:            /* MSVC 2010 Doesn't support static variables in a lambda, but */   \
+        -:  298:            /* happily accepts them in a static function of a lambda-local */   \
+        -:  299:            /* struct :-) */                                                    \
+        -:  300:            struct StaticWrapper {                                              \
+        -:  301:                static QArrayDataPointerRef<Type> get()                         \
+        -:  302:                {                                                               \
+        -:  303:                    Q_ARRAY_LITERAL_IMPL(Type, __VA_ARGS__)                     \
+        -:  304:                    return ref;                                                 \
+        -:  305:                }                                                               \
+        -:  306:            };                                                                  \
+        -:  307:            return StaticWrapper::get();                                        \
+        -:  308:        }())                                                                    \
+        -:  309:    /**/
+        -:  310:#endif
+        -:  311:#endif // defined(Q_COMPILER_VARIADIC_MACROS)
+        -:  312:
+        -:  313:#if defined(Q_ARRAY_LITERAL)
+        -:  314:#define Q_ARRAY_LITERAL_IMPL(Type, ...)                                         \
+        -:  315:    union { Type type_must_be_POD; } dummy; Q_UNUSED(dummy)                     \
+        -:  316:                                                                                \
+        -:  317:    /* Portable compile-time array size computation */                          \
+        -:  318:    Type data[] = { __VA_ARGS__ }; Q_UNUSED(data)                               \
+        -:  319:    enum { Size = sizeof(data) / sizeof(data[0]) };                             \
+        -:  320:                                                                                \
+        -:  321:    static const QStaticArrayData<Type, Size> literal = {                       \
+        -:  322:        Q_STATIC_ARRAY_DATA_HEADER_INITIALIZER(Type, Size), { __VA_ARGS__ } };  \
+        -:  323:                                                                                \
+        -:  324:    QArrayDataPointerRef<Type> ref =                                            \
+        -:  325:        { static_cast<QTypedArrayData<Type> *>(                                 \
+        -:  326:            const_cast<QArrayData *>(&literal.header)) };                       \
+        -:  327:    /**/
+        -:  328:#else
+        -:  329:// As a fallback, memory is allocated and data copied to the heap.
+        -:  330:
+        -:  331:// The fallback macro does NOT use variadic macros and does NOT support
+        -:  332:// variable number of arguments. It is suitable for char arrays.
+        -:  333:
+        -:  334:namespace QtPrivate {
+        -:  335:    template <class T, size_t N>
+        -:  336:    inline QArrayDataPointerRef<T> qMakeArrayLiteral(const T (&array)[N])
+        -:  337:    {
+        -:  338:        union { T type_must_be_POD; } dummy; Q_UNUSED(dummy)
+        -:  339:
+        -:  340:        QArrayDataPointerRef<T> result = { QTypedArrayData<T>::allocate(N) };
+        -:  341:        Q_CHECK_PTR(result.ptr);
+        -:  342:
+        -:  343:        ::memcpy(result.ptr->data(), array, N * sizeof(T));
+        -:  344:        result.ptr->size = N;
+        -:  345:
+        -:  346:        return result;
+        -:  347:    }
+        -:  348:}
+        -:  349:
+        -:  350:#define Q_ARRAY_LITERAL(Type, Array) \
+        -:  351:    QT_PREPEND_NAMESPACE(QtPrivate::qMakeArrayLiteral)<Type>( Array )
+        -:  352:#endif // !defined(Q_ARRAY_LITERAL)
+        -:  353:
+        -:  354:namespace QtPrivate {
+        -:  355:struct Q_CORE_EXPORT QContainerImplHelper
+        -:  356:{
+        -:  357:    enum CutResult { Null, Empty, Full, Subset };
+        -:  358:    static CutResult mid(int originalLength, int *position, int *length);
+        -:  359:};
+        -:  360:}
+        -:  361:
+        -:  362:QT_END_NAMESPACE
+        -:  363:
+        -:  364:#endif // include guard

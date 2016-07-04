@@ -1,0 +1,184 @@
+        -:    0:Source:/home/pako/Qt5.6.0/5.6/gcc_64/include/QtCore/qflags.h
+        -:    0:Graph:/home/pako/Desktop/GitLab/library/media_player_qml_cmake/build/CMakeFiles/music_player.dir/src/mediaplayer.cpp.gcno
+        -:    0:Data:/home/pako/Desktop/GitLab/library/media_player_qml_cmake/build/CMakeFiles/music_player.dir/src/mediaplayer.cpp.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:/****************************************************************************
+        -:    2:**
+        -:    3:** Copyright (C) 2015 The Qt Company Ltd.
+        -:    4:** Contact: http://www.qt.io/licensing/
+        -:    5:**
+        -:    6:** This file is part of the QtCore module of the Qt Toolkit.
+        -:    7:**
+        -:    8:** $QT_BEGIN_LICENSE:LGPL21$
+        -:    9:** Commercial License Usage
+        -:   10:** Licensees holding valid commercial Qt licenses may use this file in
+        -:   11:** accordance with the commercial license agreement provided with the
+        -:   12:** Software or, alternatively, in accordance with the terms contained in
+        -:   13:** a written agreement between you and The Qt Company. For licensing terms
+        -:   14:** and conditions see http://www.qt.io/terms-conditions. For further
+        -:   15:** information use the contact form at http://www.qt.io/contact-us.
+        -:   16:**
+        -:   17:** GNU Lesser General Public License Usage
+        -:   18:** Alternatively, this file may be used under the terms of the GNU Lesser
+        -:   19:** General Public License version 2.1 or version 3 as published by the Free
+        -:   20:** Software Foundation and appearing in the file LICENSE.LGPLv21 and
+        -:   21:** LICENSE.LGPLv3 included in the packaging of this file. Please review the
+        -:   22:** following information to ensure the GNU Lesser General Public License
+        -:   23:** requirements will be met: https://www.gnu.org/licenses/lgpl.html and
+        -:   24:** http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
+        -:   25:**
+        -:   26:** As a special exception, The Qt Company gives you certain additional
+        -:   27:** rights. These rights are described in The Qt Company LGPL Exception
+        -:   28:** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
+        -:   29:**
+        -:   30:** $QT_END_LICENSE$
+        -:   31:**
+        -:   32:****************************************************************************/
+        -:   33:
+        -:   34:#include <QtCore/qglobal.h>
+        -:   35:
+        -:   36:#ifndef QFLAGS_H
+        -:   37:#define QFLAGS_H
+        -:   38:
+        -:   39:#include <QtCore/qtypeinfo.h>
+        -:   40:#include <QtCore/qtypetraits.h>
+        -:   41:
+        -:   42:#ifdef Q_COMPILER_INITIALIZER_LISTS
+        -:   43:#include <initializer_list>
+        -:   44:#endif
+        -:   45:
+        -:   46:QT_BEGIN_NAMESPACE
+        -:   47:
+        -:   48:class QFlag
+        -:   49:{
+        -:   50:    int i;
+        -:   51:public:
+        -:   52:    Q_DECL_CONSTEXPR inline QFlag(int ai) Q_DECL_NOTHROW : i(ai) {}
+        -:   53:    Q_DECL_CONSTEXPR inline operator int() const Q_DECL_NOTHROW { return i; }
+        -:   54:
+        -:   55:#if !defined(Q_CC_MSVC)
+        -:   56:    // Microsoft Visual Studio has buggy behavior when it comes to
+        -:   57:    // unsigned enums: even if the enum is unsigned, the enum tags are
+        -:   58:    // always signed
+        -:   59:#  if !defined(__LP64__) && !defined(Q_QDOC)
+        -:   60:    Q_DECL_CONSTEXPR inline QFlag(long ai) Q_DECL_NOTHROW : i(int(ai)) {}
+        -:   61:    Q_DECL_CONSTEXPR inline QFlag(ulong ai) Q_DECL_NOTHROW : i(int(long(ai))) {}
+        -:   62:#  endif
+        -:   63:    Q_DECL_CONSTEXPR inline QFlag(uint ai) Q_DECL_NOTHROW : i(int(ai)) {}
+        -:   64:    Q_DECL_CONSTEXPR inline QFlag(short ai) Q_DECL_NOTHROW : i(int(ai)) {}
+        -:   65:    Q_DECL_CONSTEXPR inline QFlag(ushort ai) Q_DECL_NOTHROW : i(int(uint(ai))) {}
+        -:   66:    Q_DECL_CONSTEXPR inline operator uint() const Q_DECL_NOTHROW { return uint(i); }
+        -:   67:#endif
+        -:   68:};
+        -:   69:Q_DECLARE_TYPEINFO(QFlag, Q_PRIMITIVE_TYPE);
+        -:   70:
+        -:   71:class QIncompatibleFlag
+        -:   72:{
+        -:   73:    int i;
+        -:   74:public:
+        -:   75:    Q_DECL_CONSTEXPR inline explicit QIncompatibleFlag(int i) Q_DECL_NOTHROW;
+        -:   76:    Q_DECL_CONSTEXPR inline operator int() const Q_DECL_NOTHROW { return i; }
+        -:   77:};
+        -:   78:Q_DECLARE_TYPEINFO(QIncompatibleFlag, Q_PRIMITIVE_TYPE);
+        -:   79:
+        -:   80:Q_DECL_CONSTEXPR inline QIncompatibleFlag::QIncompatibleFlag(int ai) Q_DECL_NOTHROW : i(ai) {}
+        -:   81:
+        -:   82:
+        -:   83:#ifndef Q_NO_TYPESAFE_FLAGS
+        -:   84:
+        -:   85:template<typename Enum>
+        -:   86:class QFlags
+        -:   87:{
+        -:   88:    Q_STATIC_ASSERT_X((sizeof(Enum) <= sizeof(int)),
+        -:   89:                      "QFlags uses an int as storage, so an enum with underlying "
+        -:   90:                      "long long will overflow.");
+        -:   91:    struct Private;
+        -:   92:    typedef int (Private::*Zero);
+        -:   93:public:
+        -:   94:#if defined(Q_CC_MSVC) || defined(Q_QDOC)
+        -:   95:    // see above for MSVC
+        -:   96:    // the definition below is too complex for qdoc
+        -:   97:    typedef int Int;
+        -:   98:#else
+        -:   99:    typedef typename QtPrivate::if_<
+        -:  100:            QtPrivate::is_unsigned<Enum>::value,
+        -:  101:            unsigned int,
+        -:  102:            signed int
+        -:  103:        >::type Int;
+        -:  104:#endif
+        -:  105:    typedef Enum enum_type;
+        -:  106:    // compiler-generated copy/move ctor/assignment operators are fine!
+        -:  107:#ifdef Q_QDOC
+        -:  108:    inline QFlags(const QFlags &other);
+        -:  109:    inline QFlags &operator=(const QFlags &other);
+        -:  110:#endif
+        -:  111:    Q_DECL_CONSTEXPR inline QFlags(Enum f) Q_DECL_NOTHROW : i(Int(f)) {}
+        1:  112:    Q_DECL_CONSTEXPR inline QFlags(Zero = Q_NULLPTR) Q_DECL_NOTHROW : i(0) {}
+        -:  113:    Q_DECL_CONSTEXPR inline QFlags(QFlag f) Q_DECL_NOTHROW : i(f) {}
+        -:  114:
+        -:  115:#ifdef Q_COMPILER_INITIALIZER_LISTS
+        -:  116:    Q_DECL_CONSTEXPR inline QFlags(std::initializer_list<Enum> flags) Q_DECL_NOTHROW
+        -:  117:        : i(initializer_list_helper(flags.begin(), flags.end())) {}
+        -:  118:#endif
+        -:  119:
+        -:  120:    Q_DECL_RELAXED_CONSTEXPR inline QFlags &operator&=(int mask) Q_DECL_NOTHROW { i &= mask; return *this; }
+        -:  121:    Q_DECL_RELAXED_CONSTEXPR inline QFlags &operator&=(uint mask) Q_DECL_NOTHROW { i &= mask; return *this; }
+        -:  122:    Q_DECL_RELAXED_CONSTEXPR inline QFlags &operator&=(Enum mask) Q_DECL_NOTHROW { i &= Int(mask); return *this; }
+        -:  123:    Q_DECL_RELAXED_CONSTEXPR inline QFlags &operator|=(QFlags f) Q_DECL_NOTHROW { i |= f.i; return *this; }
+        -:  124:    Q_DECL_RELAXED_CONSTEXPR inline QFlags &operator|=(Enum f) Q_DECL_NOTHROW { i |= Int(f); return *this; }
+        -:  125:    Q_DECL_RELAXED_CONSTEXPR inline QFlags &operator^=(QFlags f) Q_DECL_NOTHROW { i ^= f.i; return *this; }
+        -:  126:    Q_DECL_RELAXED_CONSTEXPR inline QFlags &operator^=(Enum f) Q_DECL_NOTHROW { i ^= Int(f); return *this; }
+        -:  127:
+        -:  128:    Q_DECL_CONSTEXPR inline operator Int() const Q_DECL_NOTHROW { return i; }
+        -:  129:
+        -:  130:    Q_DECL_CONSTEXPR inline QFlags operator|(QFlags f) const Q_DECL_NOTHROW { return QFlags(QFlag(i | f.i)); }
+        -:  131:    Q_DECL_CONSTEXPR inline QFlags operator|(Enum f) const Q_DECL_NOTHROW { return QFlags(QFlag(i | Int(f))); }
+        -:  132:    Q_DECL_CONSTEXPR inline QFlags operator^(QFlags f) const Q_DECL_NOTHROW { return QFlags(QFlag(i ^ f.i)); }
+        -:  133:    Q_DECL_CONSTEXPR inline QFlags operator^(Enum f) const Q_DECL_NOTHROW { return QFlags(QFlag(i ^ Int(f))); }
+        -:  134:    Q_DECL_CONSTEXPR inline QFlags operator&(int mask) const Q_DECL_NOTHROW { return QFlags(QFlag(i & mask)); }
+        -:  135:    Q_DECL_CONSTEXPR inline QFlags operator&(uint mask) const Q_DECL_NOTHROW { return QFlags(QFlag(i & mask)); }
+        -:  136:    Q_DECL_CONSTEXPR inline QFlags operator&(Enum f) const Q_DECL_NOTHROW { return QFlags(QFlag(i & Int(f))); }
+        -:  137:    Q_DECL_CONSTEXPR inline QFlags operator~() const Q_DECL_NOTHROW { return QFlags(QFlag(~i)); }
+        -:  138:
+        -:  139:    Q_DECL_CONSTEXPR inline bool operator!() const Q_DECL_NOTHROW { return !i; }
+        -:  140:
+        -:  141:    Q_DECL_CONSTEXPR inline bool testFlag(Enum f) const Q_DECL_NOTHROW { return (i & Int(f)) == Int(f) && (Int(f) != 0 || i == Int(f) ); }
+        -:  142:private:
+        -:  143:#ifdef Q_COMPILER_INITIALIZER_LISTS
+        -:  144:    Q_DECL_CONSTEXPR static inline Int initializer_list_helper(typename std::initializer_list<Enum>::const_iterator it,
+        -:  145:                                                               typename std::initializer_list<Enum>::const_iterator end)
+        -:  146:    Q_DECL_NOTHROW
+        -:  147:    {
+        -:  148:        return (it == end ? Int(0) : (Int(*it) | initializer_list_helper(it + 1, end)));
+        -:  149:    }
+        -:  150:#endif
+        -:  151:
+        -:  152:    Int i;
+        -:  153:};
+        -:  154:
+        -:  155:#define Q_DECLARE_FLAGS(Flags, Enum)\
+        -:  156:typedef QFlags<Enum> Flags;
+        -:  157:
+        -:  158:#define Q_DECLARE_INCOMPATIBLE_FLAGS(Flags) \
+        -:  159:Q_DECL_CONSTEXPR inline QIncompatibleFlag operator|(Flags::enum_type f1, int f2) Q_DECL_NOTHROW \
+        -:  160:{ return QIncompatibleFlag(int(f1) | f2); }
+        -:  161:
+        -:  162:#define Q_DECLARE_OPERATORS_FOR_FLAGS(Flags) \
+        -:  163:Q_DECL_CONSTEXPR inline QFlags<Flags::enum_type> operator|(Flags::enum_type f1, Flags::enum_type f2) Q_DECL_NOTHROW \
+        -:  164:{ return QFlags<Flags::enum_type>(f1) | f2; } \
+        -:  165:Q_DECL_CONSTEXPR inline QFlags<Flags::enum_type> operator|(Flags::enum_type f1, QFlags<Flags::enum_type> f2) Q_DECL_NOTHROW \
+        -:  166:{ return f2 | f1; } Q_DECLARE_INCOMPATIBLE_FLAGS(Flags)
+        -:  167:
+        -:  168:
+        -:  169:#else /* Q_NO_TYPESAFE_FLAGS */
+        -:  170:
+        -:  171:#define Q_DECLARE_FLAGS(Flags, Enum)\
+        -:  172:typedef uint Flags;
+        -:  173:#define Q_DECLARE_OPERATORS_FOR_FLAGS(Flags)
+        -:  174:
+        -:  175:#endif /* Q_NO_TYPESAFE_FLAGS */
+        -:  176:
+        -:  177:QT_END_NAMESPACE
+        -:  178:
+        -:  179:#endif // QFLAGS_H

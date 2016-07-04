@@ -1,0 +1,155 @@
+        -:    0:Source:/home/pako/Desktop/GitLab/library/media_player_qml_cmake/src/mediaplayer.cpp
+        -:    0:Graph:/home/pako/Desktop/GitLab/library/media_player_qml_cmake/build/CMakeFiles/music_player.dir/src/mediaplayer.cpp.gcno
+        -:    0:Data:/home/pako/Desktop/GitLab/library/media_player_qml_cmake/build/CMakeFiles/music_player.dir/src/mediaplayer.cpp.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:#include "mediaplayer.h"
+        -:    2:
+        1:    3:MediaPlayer::~MediaPlayer()
+        -:    4:{
+        -:    5:
+        1:    6:}
+        -:    7:
+        1:    8:MediaPlayer::MediaPlayer()
+        1:    9:    :m_volume(50), m_progress(0)
+        -:   10:{
+        -:   11:
+        1:   12:    m_player = new QMediaPlayer();
+        1:   13:    m_playlist = new QMediaPlaylist();
+        -:   14:
+        1:   15:    m_player->setPlaylist(m_playlist);
+        -:   16:
+        1:   17:    connect(m_player, &QMediaPlayer::durationChanged,  this, &MediaPlayer::changeDuration);
+        1:   18:    connect(m_player, &QMediaPlayer::positionChanged, this, &MediaPlayer::changeProgress);
+        1:   19:}
+        -:   20:
+        2:   21:void MediaPlayer::mediaPlay()
+        -:   22:{
+        2:   23:    m_player->play();
+        2:   24:}
+        -:   25:
+        1:   26:void MediaPlayer::mediaPause()
+        -:   27:{
+        1:   28:    m_player->pause();
+        1:   29:}
+        -:   30:
+        1:   31:void MediaPlayer::mediaStop()
+        -:   32:{
+        1:   33:    m_player->stop();
+        1:   34:}
+        -:   35:
+        1:   36:void MediaPlayer::mediaNext()
+        -:   37:{
+        1:   38:    m_playlist->next();
+        1:   39:}
+        -:   40:
+    #####:   41:void MediaPlayer::mediaPrevious()
+        -:   42:{
+    #####:   43:    m_playlist->previous();
+    #####:   44:}
+        -:   45:
+    #####:   46:void MediaPlayer::mediaJump(int index)
+        -:   47:{
+    #####:   48:   m_playlist->setCurrentIndex(index);
+    #####:   49:   m_player->play();
+    #####:   50:}
+        -:   51:
+    #####:   52:void MediaPlayer::mediaRemove(int index)
+        -:   53:{
+    #####:   54:    m_playlist->removeMedia(index);
+    #####:   55:}
+        -:   56:
+    #####:   57:int MediaPlayer::getVolume() const
+        -:   58:{
+    #####:   59:    return m_volume;
+        -:   60:}
+        -:   61:
+        3:   62:int MediaPlayer::getProgress() const
+        -:   63:{
+        3:   64:    return m_player->position();
+        -:   65:}
+        -:   66:
+        2:   67:int MediaPlayer::getDuration() const
+        -:   68:{
+        2:   69:    return m_player->duration();
+        -:   70:}
+        -:   71:
+        2:   72:QString MediaPlayer::getTitle()
+        -:   73:{
+        -:   74:
+        2:   75:	if(m_fileUrl.isNull())
+        2:   76:		return "NO_SONG";
+        -:   77:	else{
+    #####:   78:    	    m_fileUrl = m_player->currentMedia().canonicalUrl().toString();
+    #####:   79:    	    m_fileUrl = m_fileUrl.replace(0,7,"");
+    #####:   80:	    TagLib::FileRef f(m_fileUrl.toUtf8());
+    #####:   81:	    TagLib::String artist_string = f.tag()->artist();
+    #####:   82:	    TagLib::String title_string = f.tag()->title();
+    #####:   83:	    QString artist = QString::fromStdWString(artist_string.toWString());
+    #####:   84:	    QString title = QString::fromStdWString(title_string.toWString());
+    #####:   85:	    QString string = artist + " - " + title;
+    #####:   86:	    return  string;
+        -:   87:	}
+        -:   88:
+        -:   89:}
+        -:   90:
+        3:   91:int MediaPlayer::getSec()
+        -:   92:{
+        -:   93:
+        3:   94:    if(m_player->position()/1000 < 60){
+        3:   95:        m_sec=m_player->position()/1000;
+        -:   96:    }
+        -:   97:    else{
+    #####:   98:        int counter = (m_player->position()/1000) / 60;
+    #####:   99:        m_sec=m_player->position()/1000;
+    #####:  100:        if(counter >= 1){
+    #####:  101:            m_sec = m_sec - (counter*60);
+        -:  102:        }
+        -:  103:    }
+        3:  104:    return m_sec;
+        -:  105:}
+        -:  106:
+        3:  107:int MediaPlayer::getMin()
+        -:  108:{
+        3:  109:    m_min =  (m_player->position())/60000;
+        3:  110:    return m_min;
+        -:  111:}
+        -:  112:
+       16:  113:void MediaPlayer::setVolume(int volume)
+        -:  114:{
+       16:  115:    m_volume = volume;
+       16:  116:    m_player->setVolume(m_volume);
+       16:  117:}
+        -:  118:
+        1:  119:void MediaPlayer::setProgress(int progress)
+        -:  120:{
+        1:  121:    if(progress == m_player->position())
+        1:  122:        return;
+        -:  123:    else
+        1:  124:        m_player->setPosition(progress);
+        -:  125:}
+        -:  126:
+    #####:  127:void MediaPlayer::setFileUrl(QString url)
+        -:  128:{
+    #####:  129:    m_playlist->addMedia(QUrl::fromLocalFile(url));
+    #####:  130:    m_fileUrl = url;
+    #####:  131:}
+        -:  132:
+        2:  133:void MediaPlayer::changeProgress(int value)
+        -:  134:{
+        2:  135:    m_progress= value;
+        2:  136:    emit progressChanged();
+        -:  137:
+        2:  138:}
+        -:  139:
+    #####:  140:void MediaPlayer::changeDuration(int value)
+        -:  141:{
+    #####:  142:    m_duration = value;
+    #####:  143:    emit durationChanged();
+    #####:  144:}
+        -:  145:
+    #####:  146:void MediaPlayer::changeFileUrl(QString url)
+        -:  147:{
+    #####:  148:    m_fileUrl = url;
+    #####:  149:    emit fileUrlChanged();
+        3:  150:}

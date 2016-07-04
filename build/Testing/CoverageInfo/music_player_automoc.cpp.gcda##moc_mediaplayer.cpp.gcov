@@ -1,0 +1,317 @@
+        -:    0:Source:/home/pako/Desktop/GitLab/library/media_player_qml_cmake/build/moc_mediaplayer.cpp
+        -:    0:Graph:/home/pako/Desktop/GitLab/library/media_player_qml_cmake/build/CMakeFiles/music_player.dir/music_player_automoc.cpp.gcno
+        -:    0:Data:/home/pako/Desktop/GitLab/library/media_player_qml_cmake/build/CMakeFiles/music_player.dir/music_player_automoc.cpp.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:/****************************************************************************
+        -:    2:** Meta object code from reading C++ file 'mediaplayer.h'
+        -:    3:**
+        -:    4:** Created by: The Qt Meta Object Compiler version 67 (Qt 5.6.0)
+        -:    5:**
+        -:    6:** WARNING! All changes made in this file will be lost!
+        -:    7:*****************************************************************************/
+        -:    8:
+        -:    9:#include "../include/mediaplayer.h"
+        -:   10:#include <QtCore/qbytearray.h>
+        -:   11:#include <QtCore/qmetatype.h>
+        -:   12:#if !defined(Q_MOC_OUTPUT_REVISION)
+        -:   13:#error "The header file 'mediaplayer.h' doesn't include <QObject>."
+        -:   14:#elif Q_MOC_OUTPUT_REVISION != 67
+        -:   15:#error "This file was generated using the moc from 5.6.0. It"
+        -:   16:#error "cannot be used with the include files from this version of Qt."
+        -:   17:#error "(The moc has changed too much.)"
+        -:   18:#endif
+        -:   19:
+        -:   20:QT_BEGIN_MOC_NAMESPACE
+        -:   21:struct qt_meta_stringdata_MediaPlayer_t {
+        -:   22:    QByteArrayData data[23];
+        -:   23:    char stringdata0[248];
+        -:   24:};
+        -:   25:#define QT_MOC_LITERAL(idx, ofs, len) \
+        -:   26:    Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
+        -:   27:    qptrdiff(offsetof(qt_meta_stringdata_MediaPlayer_t, stringdata0) + ofs \
+        -:   28:        - idx * sizeof(QByteArrayData)) \
+        -:   29:    )
+        -:   30:static const qt_meta_stringdata_MediaPlayer_t qt_meta_stringdata_MediaPlayer = {
+        -:   31:    {
+        -:   32:QT_MOC_LITERAL(0, 0, 11), // "MediaPlayer"
+        -:   33:QT_MOC_LITERAL(1, 12, 13), // "volumeChanged"
+        -:   34:QT_MOC_LITERAL(2, 26, 0), // ""
+        -:   35:QT_MOC_LITERAL(3, 27, 15), // "progressChanged"
+        -:   36:QT_MOC_LITERAL(4, 43, 15), // "durationChanged"
+        -:   37:QT_MOC_LITERAL(5, 59, 14), // "fileUrlChanged"
+        -:   38:QT_MOC_LITERAL(6, 74, 9), // "mediaPlay"
+        -:   39:QT_MOC_LITERAL(7, 84, 10), // "mediaPause"
+        -:   40:QT_MOC_LITERAL(8, 95, 9), // "mediaStop"
+        -:   41:QT_MOC_LITERAL(9, 105, 9), // "mediaNext"
+        -:   42:QT_MOC_LITERAL(10, 115, 13), // "mediaPrevious"
+        -:   43:QT_MOC_LITERAL(11, 129, 9), // "mediaJump"
+        -:   44:QT_MOC_LITERAL(12, 139, 11), // "mediaRemove"
+        -:   45:QT_MOC_LITERAL(13, 151, 14), // "changeProgress"
+        -:   46:QT_MOC_LITERAL(14, 166, 14), // "changeDuration"
+        -:   47:QT_MOC_LITERAL(15, 181, 13), // "changeFileUrl"
+        -:   48:QT_MOC_LITERAL(16, 195, 6), // "volume"
+        -:   49:QT_MOC_LITERAL(17, 202, 8), // "progress"
+        -:   50:QT_MOC_LITERAL(18, 211, 8), // "duration"
+        -:   51:QT_MOC_LITERAL(19, 220, 5), // "title"
+        -:   52:QT_MOC_LITERAL(20, 226, 7), // "fileUrl"
+        -:   53:QT_MOC_LITERAL(21, 234, 6), // "second"
+        -:   54:QT_MOC_LITERAL(22, 241, 6) // "minute"
+        -:   55:
+        -:   56:    },
+        -:   57:    "MediaPlayer\0volumeChanged\0\0progressChanged\0"
+        -:   58:    "durationChanged\0fileUrlChanged\0mediaPlay\0"
+        -:   59:    "mediaPause\0mediaStop\0mediaNext\0"
+        -:   60:    "mediaPrevious\0mediaJump\0mediaRemove\0"
+        -:   61:    "changeProgress\0changeDuration\0"
+        -:   62:    "changeFileUrl\0volume\0progress\0duration\0"
+        -:   63:    "title\0fileUrl\0second\0minute"
+        -:   64:};
+        -:   65:#undef QT_MOC_LITERAL
+        -:   66:
+        -:   67:static const uint qt_meta_data_MediaPlayer[] = {
+        -:   68:
+        -:   69: // content:
+        -:   70:       7,       // revision
+        -:   71:       0,       // classname
+        -:   72:       0,    0, // classinfo
+        -:   73:      14,   14, // methods
+        -:   74:       7,  108, // properties
+        -:   75:       0,    0, // enums/sets
+        -:   76:       0,    0, // constructors
+        -:   77:       0,       // flags
+        -:   78:       4,       // signalCount
+        -:   79:
+        -:   80: // signals: name, argc, parameters, tag, flags
+        -:   81:       1,    0,   84,    2, 0x06 /* Public */,
+        -:   82:       3,    0,   85,    2, 0x06 /* Public */,
+        -:   83:       4,    0,   86,    2, 0x06 /* Public */,
+        -:   84:       5,    0,   87,    2, 0x06 /* Public */,
+        -:   85:
+        -:   86: // slots: name, argc, parameters, tag, flags
+        -:   87:       6,    0,   88,    2, 0x0a /* Public */,
+        -:   88:       7,    0,   89,    2, 0x0a /* Public */,
+        -:   89:       8,    0,   90,    2, 0x0a /* Public */,
+        -:   90:       9,    0,   91,    2, 0x0a /* Public */,
+        -:   91:      10,    0,   92,    2, 0x0a /* Public */,
+        -:   92:      11,    1,   93,    2, 0x0a /* Public */,
+        -:   93:      12,    1,   96,    2, 0x0a /* Public */,
+        -:   94:      13,    1,   99,    2, 0x0a /* Public */,
+        -:   95:      14,    1,  102,    2, 0x0a /* Public */,
+        -:   96:      15,    1,  105,    2, 0x0a /* Public */,
+        -:   97:
+        -:   98: // signals: parameters
+        -:   99:    QMetaType::Int,
+        -:  100:    QMetaType::Int,
+        -:  101:    QMetaType::Int,
+        -:  102:    QMetaType::Int,
+        -:  103:
+        -:  104: // slots: parameters
+        -:  105:    QMetaType::Void,
+        -:  106:    QMetaType::Void,
+        -:  107:    QMetaType::Void,
+        -:  108:    QMetaType::Void,
+        -:  109:    QMetaType::Void,
+        -:  110:    QMetaType::Void, QMetaType::Int,    2,
+        -:  111:    QMetaType::Void, QMetaType::Int,    2,
+        -:  112:    QMetaType::Void, QMetaType::Int,    2,
+        -:  113:    QMetaType::Void, QMetaType::Int,    2,
+        -:  114:    QMetaType::Void, QMetaType::QString,    2,
+        -:  115:
+        -:  116: // properties: name, type, flags
+        -:  117:      16, QMetaType::Int, 0x00495103,
+        -:  118:      17, QMetaType::Int, 0x00495103,
+        -:  119:      18, QMetaType::Int, 0x00495001,
+        -:  120:      19, QMetaType::QString, 0x00495001,
+        -:  121:      20, QMetaType::QString, 0x00095102,
+        -:  122:      21, QMetaType::Int, 0x00495001,
+        -:  123:      22, QMetaType::Int, 0x00495001,
+        -:  124:
+        -:  125: // properties: notify_signal_id
+        -:  126:       0,
+        -:  127:       1,
+        -:  128:       2,
+        -:  129:       2,
+        -:  130:       0,
+        -:  131:       1,
+        -:  132:       1,
+        -:  133:
+        -:  134:       0        // eod
+        -:  135:};
+        -:  136:
+       35:  137:void MediaPlayer::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
+        -:  138:{
+       35:  139:    if (_c == QMetaObject::InvokeMetaMethod) {
+        5:  140:        MediaPlayer *_t = static_cast<MediaPlayer *>(_o);
+        -:  141:        Q_UNUSED(_t)
+        5:  142:        switch (_id) {
+    #####:  143:        case 0: { int _r = _t->volumeChanged();
+    #####:  144:            if (_a[0]) *reinterpret_cast< int*>(_a[0]) = _r; }  break;
+    #####:  145:        case 1: { int _r = _t->progressChanged();
+    #####:  146:            if (_a[0]) *reinterpret_cast< int*>(_a[0]) = _r; }  break;
+    #####:  147:        case 2: { int _r = _t->durationChanged();
+    #####:  148:            if (_a[0]) *reinterpret_cast< int*>(_a[0]) = _r; }  break;
+    #####:  149:        case 3: { int _r = _t->fileUrlChanged();
+    #####:  150:            if (_a[0]) *reinterpret_cast< int*>(_a[0]) = _r; }  break;
+        2:  151:        case 4: _t->mediaPlay(); break;
+        1:  152:        case 5: _t->mediaPause(); break;
+        1:  153:        case 6: _t->mediaStop(); break;
+        1:  154:        case 7: _t->mediaNext(); break;
+    #####:  155:        case 8: _t->mediaPrevious(); break;
+    #####:  156:        case 9: _t->mediaJump((*reinterpret_cast< int(*)>(_a[1]))); break;
+    #####:  157:        case 10: _t->mediaRemove((*reinterpret_cast< int(*)>(_a[1]))); break;
+    #####:  158:        case 11: _t->changeProgress((*reinterpret_cast< int(*)>(_a[1]))); break;
+    #####:  159:        case 12: _t->changeDuration((*reinterpret_cast< int(*)>(_a[1]))); break;
+    #####:  160:        case 13: _t->changeFileUrl((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        -:  161:        default: ;
+        -:  162:        }
+       30:  163:    } else if (_c == QMetaObject::IndexOfMethod) {
+    #####:  164:        int *result = reinterpret_cast<int *>(_a[0]);
+    #####:  165:        void **func = reinterpret_cast<void **>(_a[1]);
+        -:  166:        {
+        -:  167:            typedef int (MediaPlayer::*_t)();
+    #####:  168:            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&MediaPlayer::volumeChanged)) {
+    #####:  169:                *result = 0;
+    #####:  170:                return;
+        -:  171:            }
+        -:  172:        }
+        -:  173:        {
+        -:  174:            typedef int (MediaPlayer::*_t)();
+    #####:  175:            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&MediaPlayer::progressChanged)) {
+    #####:  176:                *result = 1;
+    #####:  177:                return;
+        -:  178:            }
+        -:  179:        }
+        -:  180:        {
+        -:  181:            typedef int (MediaPlayer::*_t)();
+    #####:  182:            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&MediaPlayer::durationChanged)) {
+    #####:  183:                *result = 2;
+    #####:  184:                return;
+        -:  185:            }
+        -:  186:        }
+        -:  187:        {
+        -:  188:            typedef int (MediaPlayer::*_t)();
+    #####:  189:            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&MediaPlayer::fileUrlChanged)) {
+    #####:  190:                *result = 3;
+    #####:  191:                return;
+        -:  192:            }
+        -:  193:        }
+        -:  194:    }
+        -:  195:#ifndef QT_NO_PROPERTIES
+       30:  196:    else if (_c == QMetaObject::ReadProperty) {
+       13:  197:        MediaPlayer *_t = static_cast<MediaPlayer *>(_o);
+        -:  198:        Q_UNUSED(_t)
+       13:  199:        void *_v = _a[0];
+       13:  200:        switch (_id) {
+    #####:  201:        case 0: *reinterpret_cast< int*>(_v) = _t->getVolume(); break;
+        3:  202:        case 1: *reinterpret_cast< int*>(_v) = _t->getProgress(); break;
+        2:  203:        case 2: *reinterpret_cast< int*>(_v) = _t->getDuration(); break;
+        2:  204:        case 3: *reinterpret_cast< QString*>(_v) = _t->getTitle(); break;
+        3:  205:        case 5: *reinterpret_cast< int*>(_v) = _t->getSec(); break;
+        3:  206:        case 6: *reinterpret_cast< int*>(_v) = _t->getMin(); break;
+    #####:  207:        default: break;
+        -:  208:        }
+       17:  209:    } else if (_c == QMetaObject::WriteProperty) {
+       17:  210:        MediaPlayer *_t = static_cast<MediaPlayer *>(_o);
+        -:  211:        Q_UNUSED(_t)
+       17:  212:        void *_v = _a[0];
+       17:  213:        switch (_id) {
+       16:  214:        case 0: _t->setVolume(*reinterpret_cast< int*>(_v)); break;
+        1:  215:        case 1: _t->setProgress(*reinterpret_cast< int*>(_v)); break;
+    #####:  216:        case 4: _t->setFileUrl(*reinterpret_cast< QString*>(_v)); break;
+    #####:  217:        default: break;
+        -:  218:        }
+        -:  219:    } else if (_c == QMetaObject::ResetProperty) {
+        -:  220:    }
+        -:  221:#endif // QT_NO_PROPERTIES
+        -:  222:}
+        -:  223:
+        -:  224:const QMetaObject MediaPlayer::staticMetaObject = {
+        -:  225:    { &QObject::staticMetaObject, qt_meta_stringdata_MediaPlayer.data,
+        -:  226:      qt_meta_data_MediaPlayer,  qt_static_metacall, Q_NULLPTR, Q_NULLPTR}
+        -:  227:};
+        -:  228:
+        -:  229:
+       11:  230:const QMetaObject *MediaPlayer::metaObject() const
+        -:  231:{
+       11:  232:    return QObject::d_ptr->metaObject ? QObject::d_ptr->dynamicMetaObject() : &staticMetaObject;
+        -:  233:}
+        -:  234:
+    #####:  235:void *MediaPlayer::qt_metacast(const char *_clname)
+        -:  236:{
+    #####:  237:    if (!_clname) return Q_NULLPTR;
+    #####:  238:    if (!strcmp(_clname, qt_meta_stringdata_MediaPlayer.stringdata0))
+    #####:  239:        return static_cast<void*>(const_cast< MediaPlayer*>(this));
+    #####:  240:    return QObject::qt_metacast(_clname);
+        -:  241:}
+        -:  242:
+       35:  243:int MediaPlayer::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+        -:  244:{
+       35:  245:    _id = QObject::qt_metacall(_c, _id, _a);
+       35:  246:    if (_id < 0)
+    #####:  247:        return _id;
+       35:  248:    if (_c == QMetaObject::InvokeMetaMethod) {
+        5:  249:        if (_id < 14)
+        5:  250:            qt_static_metacall(this, _c, _id, _a);
+        5:  251:        _id -= 14;
+       30:  252:    } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
+    #####:  253:        if (_id < 14)
+    #####:  254:            *reinterpret_cast<int*>(_a[0]) = -1;
+    #####:  255:        _id -= 14;
+        -:  256:    }
+        -:  257:#ifndef QT_NO_PROPERTIES
+       30:  258:   else if (_c == QMetaObject::ReadProperty || _c == QMetaObject::WriteProperty
+    #####:  259:            || _c == QMetaObject::ResetProperty || _c == QMetaObject::RegisterPropertyMetaType) {
+       30:  260:        qt_static_metacall(this, _c, _id, _a);
+       30:  261:        _id -= 7;
+    #####:  262:    } else if (_c == QMetaObject::QueryPropertyDesignable) {
+    #####:  263:        _id -= 7;
+    #####:  264:    } else if (_c == QMetaObject::QueryPropertyScriptable) {
+    #####:  265:        _id -= 7;
+    #####:  266:    } else if (_c == QMetaObject::QueryPropertyStored) {
+    #####:  267:        _id -= 7;
+    #####:  268:    } else if (_c == QMetaObject::QueryPropertyEditable) {
+    #####:  269:        _id -= 7;
+    #####:  270:    } else if (_c == QMetaObject::QueryPropertyUser) {
+    #####:  271:        _id -= 7;
+        -:  272:    }
+        -:  273:#endif // QT_NO_PROPERTIES
+       35:  274:    return _id;
+        -:  275:}
+        -:  276:
+        -:  277:// SIGNAL 0
+    #####:  278:int MediaPlayer::volumeChanged()
+        -:  279:{
+    #####:  280:    int _t0 = int();
+    #####:  281:    void *_a[] = { const_cast<void*>(reinterpret_cast<const void*>(&_t0)) };
+    #####:  282:    QMetaObject::activate(this, &staticMetaObject, 0, _a);
+    #####:  283:    return _t0;
+        -:  284:}
+        -:  285:
+        -:  286:// SIGNAL 1
+        2:  287:int MediaPlayer::progressChanged()
+        -:  288:{
+        2:  289:    int _t0 = int();
+        2:  290:    void *_a[] = { const_cast<void*>(reinterpret_cast<const void*>(&_t0)) };
+        2:  291:    QMetaObject::activate(this, &staticMetaObject, 1, _a);
+        2:  292:    return _t0;
+        -:  293:}
+        -:  294:
+        -:  295:// SIGNAL 2
+    #####:  296:int MediaPlayer::durationChanged()
+        -:  297:{
+    #####:  298:    int _t0 = int();
+    #####:  299:    void *_a[] = { const_cast<void*>(reinterpret_cast<const void*>(&_t0)) };
+    #####:  300:    QMetaObject::activate(this, &staticMetaObject, 2, _a);
+    #####:  301:    return _t0;
+        -:  302:}
+        -:  303:
+        -:  304:// SIGNAL 3
+    #####:  305:int MediaPlayer::fileUrlChanged()
+        -:  306:{
+    #####:  307:    int _t0 = int();
+    #####:  308:    void *_a[] = { const_cast<void*>(reinterpret_cast<const void*>(&_t0)) };
+    #####:  309:    QMetaObject::activate(this, &staticMetaObject, 3, _a);
+    #####:  310:    return _t0;
+        3:  311:}
+        -:  312:QT_END_MOC_NAMESPACE

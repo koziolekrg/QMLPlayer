@@ -1,0 +1,249 @@
+        -:    0:Source:/home/pako/Qt5.6.0/5.6/gcc_64/include/QtCore/qscopedpointer.h
+        -:    0:Graph:/home/pako/Desktop/GitLab/library/media_player_qml_cmake/build/CMakeFiles/music_player.dir/music_player_automoc.cpp.gcno
+        -:    0:Data:/home/pako/Desktop/GitLab/library/media_player_qml_cmake/build/CMakeFiles/music_player.dir/music_player_automoc.cpp.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:/****************************************************************************
+        -:    2:**
+        -:    3:** Copyright (C) 2015 The Qt Company Ltd.
+        -:    4:** Contact: http://www.qt.io/licensing/
+        -:    5:**
+        -:    6:** This file is part of the QtCore module of the Qt Toolkit.
+        -:    7:**
+        -:    8:** $QT_BEGIN_LICENSE:LGPL21$
+        -:    9:** Commercial License Usage
+        -:   10:** Licensees holding valid commercial Qt licenses may use this file in
+        -:   11:** accordance with the commercial license agreement provided with the
+        -:   12:** Software or, alternatively, in accordance with the terms contained in
+        -:   13:** a written agreement between you and The Qt Company. For licensing terms
+        -:   14:** and conditions see http://www.qt.io/terms-conditions. For further
+        -:   15:** information use the contact form at http://www.qt.io/contact-us.
+        -:   16:**
+        -:   17:** GNU Lesser General Public License Usage
+        -:   18:** Alternatively, this file may be used under the terms of the GNU Lesser
+        -:   19:** General Public License version 2.1 or version 3 as published by the Free
+        -:   20:** Software Foundation and appearing in the file LICENSE.LGPLv21 and
+        -:   21:** LICENSE.LGPLv3 included in the packaging of this file. Please review the
+        -:   22:** following information to ensure the GNU Lesser General Public License
+        -:   23:** requirements will be met: https://www.gnu.org/licenses/lgpl.html and
+        -:   24:** http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
+        -:   25:**
+        -:   26:** As a special exception, The Qt Company gives you certain additional
+        -:   27:** rights. These rights are described in The Qt Company LGPL Exception
+        -:   28:** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
+        -:   29:**
+        -:   30:** $QT_END_LICENSE$
+        -:   31:**
+        -:   32:****************************************************************************/
+        -:   33:
+        -:   34:#ifndef QSCOPEDPOINTER_H
+        -:   35:#define QSCOPEDPOINTER_H
+        -:   36:
+        -:   37:#include <QtCore/qglobal.h>
+        -:   38:
+        -:   39:#include <stdlib.h>
+        -:   40:
+        -:   41:QT_BEGIN_NAMESPACE
+        -:   42:
+        -:   43:template <typename T>
+        -:   44:struct QScopedPointerDeleter
+        -:   45:{
+        -:   46:    static inline void cleanup(T *pointer)
+        -:   47:    {
+        -:   48:        // Enforce a complete type.
+        -:   49:        // If you get a compile error here, read the section on forward declared
+        -:   50:        // classes in the QScopedPointer documentation.
+        -:   51:        typedef char IsIncompleteType[ sizeof(T) ? 1 : -1 ];
+        -:   52:        (void) sizeof(IsIncompleteType);
+        -:   53:
+        -:   54:        delete pointer;
+        -:   55:    }
+        -:   56:};
+        -:   57:
+        -:   58:template <typename T>
+        -:   59:struct QScopedPointerArrayDeleter
+        -:   60:{
+        -:   61:    static inline void cleanup(T *pointer)
+        -:   62:    {
+        -:   63:        // Enforce a complete type.
+        -:   64:        // If you get a compile error here, read the section on forward declared
+        -:   65:        // classes in the QScopedPointer documentation.
+        -:   66:        typedef char IsIncompleteType[ sizeof(T) ? 1 : -1 ];
+        -:   67:        (void) sizeof(IsIncompleteType);
+        -:   68:
+        -:   69:        delete [] pointer;
+        -:   70:    }
+        -:   71:};
+        -:   72:
+        -:   73:struct QScopedPointerPodDeleter
+        -:   74:{
+        -:   75:    static inline void cleanup(void *pointer) { if (pointer) free(pointer); }
+        -:   76:};
+        -:   77:
+        -:   78:#ifndef QT_NO_QOBJECT
+        -:   79:template <typename T>
+        -:   80:struct QScopedPointerObjectDeleteLater
+        -:   81:{
+        -:   82:    static inline void cleanup(T *pointer) { if (pointer) pointer->deleteLater(); }
+        -:   83:};
+        -:   84:
+        -:   85:class QObject;
+        -:   86:typedef QScopedPointerObjectDeleteLater<QObject> QScopedPointerDeleteLater;
+        -:   87:#endif
+        -:   88:
+        -:   89:template <typename T, typename Cleanup = QScopedPointerDeleter<T> >
+        -:   90:class QScopedPointer
+        -:   91:{
+        -:   92:    typedef T *QScopedPointer:: *RestrictedBool;
+        -:   93:public:
+        -:   94:    explicit inline QScopedPointer(T *p = Q_NULLPTR) : d(p)
+        -:   95:    {
+        -:   96:    }
+        -:   97:
+        -:   98:    inline ~QScopedPointer()
+        -:   99:    {
+        -:  100:        T *oldD = this->d;
+        -:  101:        Cleanup::cleanup(oldD);
+        -:  102:    }
+        -:  103:
+        -:  104:    inline T &operator*() const
+        -:  105:    {
+        -:  106:        Q_ASSERT(d);
+        -:  107:        return *d;
+        -:  108:    }
+        -:  109:
+       11:  110:    inline T *operator->() const
+        -:  111:    {
+        -:  112:        Q_ASSERT(d);
+       11:  113:        return d;
+        -:  114:    }
+        -:  115:
+        -:  116:    inline bool operator!() const
+        -:  117:    {
+        -:  118:        return !d;
+        -:  119:    }
+        -:  120:
+        -:  121:#if defined(Q_QDOC)
+        -:  122:    inline operator bool() const
+        -:  123:    {
+        -:  124:        return isNull() ? Q_NULLPTR : &QScopedPointer::d;
+        -:  125:    }
+        -:  126:#else
+        -:  127:    inline operator RestrictedBool() const
+        -:  128:    {
+        -:  129:        return isNull() ? Q_NULLPTR : &QScopedPointer::d;
+        -:  130:    }
+        -:  131:#endif
+        -:  132:
+        -:  133:    inline T *data() const
+        -:  134:    {
+        -:  135:        return d;
+        -:  136:    }
+        -:  137:
+        -:  138:    inline bool isNull() const
+        -:  139:    {
+        -:  140:        return !d;
+        -:  141:    }
+        -:  142:
+        -:  143:    inline void reset(T *other = Q_NULLPTR)
+        -:  144:    {
+        -:  145:        if (d == other)
+        -:  146:            return;
+        -:  147:        T *oldD = d;
+        -:  148:        d = other;
+        -:  149:        Cleanup::cleanup(oldD);
+        -:  150:    }
+        -:  151:
+        -:  152:    inline T *take()
+        -:  153:    {
+        -:  154:        T *oldD = d;
+        -:  155:        d = Q_NULLPTR;
+        -:  156:        return oldD;
+        -:  157:    }
+        -:  158:
+        -:  159:    inline void swap(QScopedPointer<T, Cleanup> &other)
+        -:  160:    {
+        -:  161:        qSwap(d, other.d);
+        -:  162:    }
+        -:  163:
+        -:  164:    typedef T *pointer;
+        -:  165:
+        -:  166:protected:
+        -:  167:    T *d;
+        -:  168:
+        -:  169:private:
+        -:  170:    Q_DISABLE_COPY(QScopedPointer)
+        -:  171:};
+        -:  172:
+        -:  173:template <class T, class Cleanup>
+        -:  174:inline bool operator==(const QScopedPointer<T, Cleanup> &lhs, const QScopedPointer<T, Cleanup> &rhs)
+        -:  175:{
+        -:  176:    return lhs.data() == rhs.data();
+        -:  177:}
+        -:  178:
+        -:  179:template <class T, class Cleanup>
+        -:  180:inline bool operator!=(const QScopedPointer<T, Cleanup> &lhs, const QScopedPointer<T, Cleanup> &rhs)
+        -:  181:{
+        -:  182:    return lhs.data() != rhs.data();
+        -:  183:}
+        -:  184:
+        -:  185:template <class T, class Cleanup>
+        -:  186:Q_INLINE_TEMPLATE void qSwap(QScopedPointer<T, Cleanup> &p1, QScopedPointer<T, Cleanup> &p2)
+        -:  187:{ p1.swap(p2); }
+        -:  188:
+        -:  189:QT_END_NAMESPACE
+        -:  190:namespace std {
+        -:  191:    template <class T, class Cleanup>
+        -:  192:    Q_INLINE_TEMPLATE void swap(QT_PREPEND_NAMESPACE(QScopedPointer)<T, Cleanup> &p1, QT_PREPEND_NAMESPACE(QScopedPointer)<T, Cleanup> &p2)
+        -:  193:    { p1.swap(p2); }
+        -:  194:}
+        -:  195:QT_BEGIN_NAMESPACE
+        -:  196:
+        -:  197:
+        -:  198:
+        -:  199:namespace QtPrivate {
+        -:  200:    template <typename X, typename Y> struct QScopedArrayEnsureSameType;
+        -:  201:    template <typename X> struct QScopedArrayEnsureSameType<X,X> { typedef X* Type; };
+        -:  202:    template <typename X> struct QScopedArrayEnsureSameType<const X, X> { typedef X* Type; };
+        -:  203:}
+        -:  204:
+        -:  205:template <typename T, typename Cleanup = QScopedPointerArrayDeleter<T> >
+        -:  206:class QScopedArrayPointer : public QScopedPointer<T, Cleanup>
+        -:  207:{
+        -:  208:public:
+        -:  209:    inline QScopedArrayPointer() : QScopedPointer<T, Cleanup>(Q_NULLPTR) {}
+        -:  210:
+        -:  211:    template <typename D>
+        -:  212:    explicit inline QScopedArrayPointer(D *p, typename QtPrivate::QScopedArrayEnsureSameType<T,D>::Type = Q_NULLPTR)
+        -:  213:        : QScopedPointer<T, Cleanup>(p)
+        -:  214:    {
+        -:  215:    }
+        -:  216:
+        -:  217:    inline T &operator[](int i)
+        -:  218:    {
+        -:  219:        return this->d[i];
+        -:  220:    }
+        -:  221:
+        -:  222:    inline const T &operator[](int i) const
+        -:  223:    {
+        -:  224:        return this->d[i];
+        -:  225:    }
+        -:  226:
+        -:  227:private:
+        -:  228:    explicit inline QScopedArrayPointer(void *) {
+        -:  229:        // Enforce the same type.
+        -:  230:
+        -:  231:        // If you get a compile error here, make sure you declare
+        -:  232:        // QScopedArrayPointer with the same template type as you pass to the
+        -:  233:        // constructor. See also the QScopedPointer documentation.
+        -:  234:
+        -:  235:        // Storing a scalar array as a pointer to a different type is not
+        -:  236:        // allowed and results in undefined behavior.
+        -:  237:    }
+        -:  238:
+        -:  239:    Q_DISABLE_COPY(QScopedArrayPointer)
+        -:  240:};
+        -:  241:
+        -:  242:QT_END_NAMESPACE
+        -:  243:
+        -:  244:#endif // QSCOPEDPOINTER_H

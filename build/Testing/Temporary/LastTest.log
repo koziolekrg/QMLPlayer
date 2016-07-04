@@ -1,0 +1,18 @@
+Start testing: May 18 10:28 CEST
+----------------------------------------------------------
+1/1 Testing: hello_test
+1/1 Test: hello_test
+Command: "/home/pako/Desktop/GitLab/library/media_player_qml_cmake/build/music_player"
+Directory: /home/pako/Desktop/GitLab/library/media_player_qml_cmake/build
+"hello_test" start time: May 18 10:28 CEST
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =  30.37 sec
+----------------------------------------------------------
+Test Passed.
+"hello_test" end time: May 18 10:28 CEST
+"hello_test" time elapsed: 00:00:30
+----------------------------------------------------------
+
+End testing: May 18 10:28 CEST
